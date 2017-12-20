@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import debounce from 'debounce';
+import debounce from 'lodash.debounce';
 
 import style from './ItemRenderer.scss';
 

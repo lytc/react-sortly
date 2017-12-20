@@ -16,6 +16,7 @@
     "react/jsx-filename-extension": 0,
     "object-curly-newline": 0,
     "function-paren-newline": 0,
+    "no-restricted-globals": 0,
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["site/**/*.js"]}],
     "jsx-a11y/anchor-is-valid": [ "error", {
       "component": ["Link"]
