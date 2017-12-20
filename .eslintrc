@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": ["flowtype"],
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "globals": {
+    "hljs": true
+  },
+  "rules": {
+    "max-len": ["error", { "code": 120 }],
+    "no-trailing-spaces": 0,
+    "react/jsx-filename-extension": 0,
+    "object-curly-newline": 0,
+    "function-paren-newline": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["site/**/*.js"]}],
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "component": ["Link"]
+    }]
+  }
+}

@@ -18,9 +18,9 @@ class App extends PureComponent { // eslint-disable-line react/prefer-stateless-
       <HashRouter basename="/">
         <div>
           <header
-            className={`navbar navbar-dark bg-dark ${style.navbar}`}
+            className={`navbar ${style.navbar}`}
           >
-            <Link className="navbar-brand mr-0 mr-md-2" to="/dashboard">React Nested Sortable</Link>
+            <Link className="navbar-brand mr-0 mr-md-2" to="/">React Nested Sortable</Link>
             <ul className="navbar-nav pull-right">
               <li className="nav-item">
                 <a className="nav-link" href="https://github.com/lytc/react-tree">Github</a>
@@ -40,6 +40,7 @@ class App extends PureComponent { // eslint-disable-line react/prefer-stateless-
                 </nav>
               </div>
               <main className="col-12 col-xl-10 col-md-9">
+                <Route path="/" exact component={Dashboard} />
                 <Route path="/examples/simple" component={Simple} />
                 <Route path="/examples/advanced" component={Advanced} />
                 <Route path="/examples/table-sortable-row" component={TableSortableRow} />
@@ -47,7 +48,6 @@ class App extends PureComponent { // eslint-disable-line react/prefer-stateless-
                 <Route path="/examples/stress-test" component={StressTest} />
               </main>
             </div>
-            <Route path="/dashboard" component={Dashboard} />
           </div>
         </div>
       </HashRouter>

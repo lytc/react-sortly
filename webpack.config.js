@@ -45,11 +45,14 @@ const config = {
         exclude: /node_modules/,
       },
       {
+        test: /\.css$/,
+        use: [styleLoader, cssLoader, postcssLoader],
+      },
+      {
         test: /\.scss$/,
         use: [styleLoader, cssLoader, postcssLoader, sassLoader],
       },
-    ],
-    noParse: /\.min\.js/,
+    ]
   },
   plugins: [],
 };
