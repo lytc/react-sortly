@@ -1,0 +1,52 @@
+.container {
+  margin-bottom: 10px;
+
+  .body {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  &.mute {
+    .body {
+      border-style: dashed;
+      opacity: .3;
+    }
+  }
+}
+
+%btn {
+  background: none;
+  border: none;
+  padding: 4px 10px;
+}
+
+.dragHandle {
+  @extend %btn;
+  cursor: move;
+  &:focus {
+    outline: none;
+  }
+}
+
+.removeBtn {
+  @extend %btn;
+  cursor: pointer;
+  opacity: .7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.nameInput {
+  flex: 1;
+  border: none;
+  border-radius: 2px;
+  margin-left: 5px;
+  outline: none;
+
+  &:hover, &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  }
+}

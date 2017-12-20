@@ -1,0 +1,14 @@
+.container {
+  float: left;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  padding: 4px;
+  text-align: center;
+  cursor: move;
+  color: white;
+
+  &.mute {
+    opacity: .3;
+  }
+}

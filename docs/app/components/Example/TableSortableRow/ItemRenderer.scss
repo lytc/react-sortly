@@ -1,0 +1,7 @@
+.container {
+  cursor: move;
+
+  &.mute {
+    opacity: 0;
+  }
+}
