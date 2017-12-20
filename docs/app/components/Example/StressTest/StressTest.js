@@ -4,7 +4,7 @@ import faker from 'faker';
 import NestedSortable, { convert } from '../../../../../src';
 import ItemRenderer from './ItemRenderer';
 
-const ITEMS = Array.from(Array(500).keys())
+const ITEMS = Array.from(Array(1000).keys())
   .map(index => ({ id: index + 1, parentId: 0, name: faker.name.findName(), index }));
 
 export default class StressTest extends Component {

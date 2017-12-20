@@ -23,7 +23,7 @@ class App extends PureComponent { // eslint-disable-line react/prefer-stateless-
             <Link className="navbar-brand mr-0 mr-md-2" to="/">React Nested Sortable</Link>
             <ul className="navbar-nav pull-right">
               <li className="nav-item">
-                <a className="nav-link" href="https://github.com/lytc/react-tree">Github</a>
+                <a className="nav-link" href="https://github.com/lytc/react-nested-sortable">Github</a>
               </li>
             </ul>
           </header>
