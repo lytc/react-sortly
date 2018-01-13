@@ -9,3 +9,4 @@ postcss.config.js
 server.js
 webpack.config.js
 .idea
+coverage

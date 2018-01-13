@@ -7,7 +7,7 @@ export function throttle(callback: Function, wait: number) {
   const later = () => {
     callback(...callbackArgs);
     timeout = null;
-  }
+  };
 
   return function (...args) {
     if (!timeout) {
@@ -48,7 +48,7 @@ export function buildTree(
     return {
       ...data,
       children: items
-        .filter(child => child.path.includes(item.id))
+        .filter(child => child.path[child.path.length - 1] === item.id)
         .map(child => buildItem(child)),
     };
   };
@@ -79,37 +79,6 @@ export function flatten(
   });
 }
 
-export function decreaseTreeItem(items: Array<{ path: Array<number|string> }>, itemIndex: number): Object|null {
-  const updateFn = {};
-  const item = items[itemIndex];
-  const { id } = item;
-
-  // Can't decrease if it don't have prev sibling
-  const prevSiblingItem = items
-    .filter((siblingItem, index) =>
-      index < itemIndex && siblingItem.path.join('.') === item.path.join('.'),
-    )
-    .pop();
-
-  if (!prevSiblingItem) {
-    return null;
-  }
-
-  const newPath = [...prevSiblingItem.path, prevSiblingItem.id];
-
-  // update drag item path
-  updateFn[itemIndex] = { path: { $set: newPath } };
-
-  // also needs to update it descendants path
-  const descendants = items.filter(({ path }) => path.includes(id));
-  descendants.forEach((descendantItem) => {
-    updateFn[items.indexOf(descendantItem)] = {
-      path: { $splice: [[0, descendantItem.path.indexOf(id), ...newPath]] },
-    };
-  });
-  return updateFn;
-}
-
 export function increaseTreeItem(items: Array<{ path: Array<number|string> }>, itemIndex: number): Object|null {
   const updateFn = {};
   const item = items[itemIndex];
@@ -131,6 +100,37 @@ export function increaseTreeItem(items: Array<{ path: Array<number|string> }>, i
 
   // It should have the path same as it parent
   const newPath = item.path.slice(0, -1);
+
+  // update drag item path
+  updateFn[itemIndex] = { path: { $set: newPath } };
+
+  // also needs to update it descendants path
+  const descendants = items.filter(({ path }) => path.includes(id));
+  descendants.forEach((descendantItem) => {
+    updateFn[items.indexOf(descendantItem)] = {
+      path: { $splice: [[0, descendantItem.path.indexOf(id), ...newPath]] },
+    };
+  });
+  return updateFn;
+}
+
+export function decreaseTreeItem(items: Array<{ path: Array<number|string> }>, itemIndex: number): Object|null {
+  const updateFn = {};
+  const item = items[itemIndex];
+  const { id } = item;
+
+  // Can't decrease if it don't have prev sibling
+  const prevSiblingItem = items
+    .filter((siblingItem, index) =>
+      index < itemIndex && siblingItem.path.join('.') === item.path.join('.'),
+    )
+    .pop();
+
+  if (!prevSiblingItem) {
+    return null;
+  }
+
+  const newPath = [...prevSiblingItem.path, prevSiblingItem.id];
 
   // update drag item path
   updateFn[itemIndex] = { path: { $set: newPath } };
@@ -193,7 +193,8 @@ export function moveTreeItem(
   return { updateFn, newIndex };
 }
 
-export function insert(items: Array<{ path: Array<number|string> }>, targetIndex: number, itemData: Object): Object {
+export function insert(items: Array<{ path: Array<number|string> }>,
+  targetIndex: number, itemData: { id: number|string }): Object {
   const currentItemAtIndex = items[targetIndex];
   const currentItemDescendants = items.filter(({ path }) => path.includes(currentItemAtIndex.id));
   const path = [...currentItemAtIndex.path];

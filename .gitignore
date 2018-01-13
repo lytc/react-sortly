@@ -4,3 +4,4 @@ lib
 .idea
 dist
 bundle-analyze.html
+coverage
