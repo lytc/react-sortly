@@ -1,4 +1,6 @@
+const path = require('path');
 const webpack = require('webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const styleLoader = { loader: 'style-loader', options: {} };
 const postcssLoader = { loader: 'postcss-loader', options: {} };
@@ -29,7 +31,7 @@ const cssLoader = {
 const config = {
   devtool: 'sourcemap',
   entry: {
-    ReactNestedSortable: [`${__dirname}/src/index`],
+    Sortly: [`${__dirname}/src/index`],
     app: [`${__dirname}/docs/app/index`],
   },
   output: {
@@ -52,9 +54,18 @@ const config = {
         test: /\.scss$/,
         use: [styleLoader, cssLoader, postcssLoader, sassLoader],
       },
-    ]
+    ],
   },
-  plugins: [],
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static', openAnalyzer: false, reportFilename: `${__dirname}/bundle-analyze.html`,
+    }),
+  ],
+  resolve: {
+    alias: {
+      'react-sortly': path.resolve(__dirname, 'src/index'),
+    },
+  },
 };
 
 if (process.env.NODE_ENV === 'production') {

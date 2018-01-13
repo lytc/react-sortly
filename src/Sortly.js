@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import cloneDeep from 'lodash.clonedeep';
 
 import { decreaseTreeItem, increaseTreeItem, moveTreeItem, insert } from './utils';
 import Item from './Item';
 
 let reduceOffset = 0;
 const noop = () => {};
-export default class NestedSortable extends Component {
+export default class Sortly extends Component {
   static propTypes = {
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     items: PropTypes.arrayOf(PropTypes.shape({
@@ -48,8 +47,7 @@ export default class NestedSortable extends Component {
     this.props.onDragStart(dragIndex);
     // Don't allow to drop to it descendants
     const { items } = this.state;
-    this.originalDragIndex = dragIndex;
-    this.originalItems = cloneDeep(items);
+    this.originalItems = items;
 
 
     const dragItem = items[dragIndex];
@@ -72,7 +70,6 @@ export default class NestedSortable extends Component {
     if (cancelOnDropOutside && !didDrop) {
       // restore
       this.setState({ items: this.originalItems });
-      this.originalDragIndex = null;
       this.originalItems = null;
     }
 

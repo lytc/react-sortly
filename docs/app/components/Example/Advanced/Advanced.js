@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
-import faker from 'faker';
+import { name } from 'faker/locale/en';
+import Sortly, { convert } from 'react-sortly';
 
-import NestedSortable, { convert } from '../../../../../src';
 import ItemRenderer from './ItemRenderer';
 import DumpData from '../DumpData';
 
@@ -12,11 +12,11 @@ const generateId = () => {
   return idSeq;
 };
 const ITEMS = [
-  { id: 1, parentId: 0, name: faker.name.findName(), index: 0 },
-  { id: 2, parentId: 0, name: faker.name.findName(), index: 1 },
-  { id: 3, parentId: 2, name: faker.name.findName(), index: 0 },
-  { id: 4, parentId: 3, name: faker.name.findName(), index: 0 },
-  { id: 5, parentId: 0, name: faker.name.findName(), index: 2 },
+  { id: 1, parentId: 0, name: name.findName(), index: 0 },
+  { id: 2, parentId: 0, name: name.findName(), index: 1 },
+  { id: 3, parentId: 2, name: name.findName(), index: 0 },
+  { id: 4, parentId: 3, name: name.findName(), index: 0 },
+  { id: 5, parentId: 0, name: name.findName(), index: 2 },
 ];
 
 export default class Advanced extends Component {
@@ -34,7 +34,7 @@ export default class Advanced extends Component {
 
   handleClickAddNewItem = () => {
     const id = generateId();
-    const newItemData = { id, name: faker.name.findName() };
+    const newItemData = { id, name: name.findName() };
 
     this.tree.add(newItemData);
     this.setState({ activeItemId: id });
@@ -42,7 +42,7 @@ export default class Advanced extends Component {
 
   handleReturn = (targetIndex) => {
     const id = generateId();
-    const newItemData = { id, name: faker.name.findName() };
+    const newItemData = { id, name: name.findName() };
 
     this.tree.insertNextTo(targetIndex, newItemData);
     this.setState({ activeItemId: id });
@@ -71,7 +71,7 @@ export default class Advanced extends Component {
             <button type="button" className="btn btn-primary" onClick={this.handleClickAddNewItem}>Add New Item</button>
             <br />
             <br />
-            <NestedSortable
+            <Sortly
               ref={this.refTree}
               items={items}
               itemRenderer={this.renderItem}

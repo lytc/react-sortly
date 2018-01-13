@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Sortly from 'react-sortly';
 
-import NestedSortable from '../../../src';
 import style from './App.scss';
 
 const CODE = `
@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import NestedSortable from 'react-nested-sortable';
+import Sortly from 'react-sortly';
 
 const ITEMS = [
   { id: 1, name: 'Priscilla Cormier', path: [] },
@@ -53,7 +53,7 @@ class MyApp extends Component {
     const { items } = this.state;
     return (
       <div>
-        <NestedSortable 
+        <Sortly 
           items={items} 
           itemRenderer={ItemRenderer}
           onChange={this.handleChange}
@@ -127,18 +127,23 @@ export default class Dashboard extends Component {
 
     return (
       <div>
+        <br />
         <div className={style.lead}>
-          <h1>React Nested Sortable</h1>
           <p>
-            Simple, lightweight and highly customizable dnd nested sortable React component.
+            React Sortly is a simple, lightweight and highly customizable dnd nested sortable React component.
             <br />
             Supported to sort the tree, vertical list, horizontal list, table row and maybe more!
           </p>
         </div>
         <br />
+        <br />
+        <h2>Installation</h2>
+        <p><code>npm install --save react-sortly react-dnd react-dnd-html5-backend</code></p>
+        <h2>What's It Look Like?</h2>
+        <br />
         <div className="row">
           <div className="col-12 col-lg-6">
-            <NestedSortable items={items} itemRenderer={ItemRenderer} onChange={this.handleChange} />
+            <Sortly items={items} itemRenderer={ItemRenderer} onChange={this.handleChange} />
           </div>
           <div className="col-12 col-lg-6"><pre ref={this.refCode} className="js">{CODE}</pre></div>
         </div>

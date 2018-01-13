@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import faker from 'faker';
+import { name } from 'faker/locale/en';
 import debounce from 'lodash.debounce';
+import Sortly, { convert } from 'react-sortly';
 
-import NestedSortable, { convert } from '../../../../../src';
 import ItemRenderer from './ItemRenderer';
 
 const generate = numItems =>
   Array
     .from(Array(numItems).keys())
-    .map(index => ({ id: index + 1, parentId: 0, name: faker.name.findName(), index }));
+    .map(index => ({ id: index + 1, parentId: 0, name: name.findName(), index }));
 
 export default class StressTest extends Component {
   state = { numItems: 1000, generating: false, items: convert(generate(1000)) }
@@ -50,7 +50,7 @@ export default class StressTest extends Component {
               <span className="input-group-addon">items{generating && ' generating...'}</span>
             </div>
             <br />
-            <NestedSortable items={items} itemRenderer={ItemRenderer} onChange={this.handleChange} />
+            <Sortly items={items} itemRenderer={ItemRenderer} onChange={this.handleChange} />
           </div>
         </div>
       </section>

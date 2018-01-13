@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import faker from 'faker';
+import { name, internet } from 'faker/locale/en';
+import Sortly from 'react-sortly';
 
-import NestedSortable from '../../../../../src';
 import ItemRenderer from './ItemRenderer';
 import DumpData from '../DumpData';
 
 const ITEMS = Array.from(Array(5).keys())
   .map(index => ({
     id: index + 1,
-    name: faker.name.findName(),
-    email: faker.internet.email(),
+    name: name.findName(),
+    email: internet.email(),
     path: [],
   }));
 
@@ -35,7 +35,7 @@ export default class TableSortableRow extends Component {
                   <th>Email</th>
                 </tr>
               </thead>
-              <NestedSortable
+              <Sortly
                 component="tbody"
                 items={items}
                 itemRenderer={ItemRenderer}

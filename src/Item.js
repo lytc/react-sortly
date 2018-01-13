@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
-import throttle from 'lodash.throttle';
+import { throttle } from './utils';
 
 class Item extends PureComponent {
   static propTypes = {

@@ -1,4 +1,4 @@
-import NestedSortable from './NestedSortable';
+import Sortly from './Sortly';
 
-export default NestedSortable;
+export default Sortly;
 export * from './utils';

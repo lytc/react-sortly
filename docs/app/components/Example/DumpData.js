@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 
-import { buildTree, flatten } from '../../../../src/utils';
+import { buildTree, flatten } from 'react-sortly';
 
 const DumpData = ({ items, raw, tree, flat }) => (
   <div className="row">

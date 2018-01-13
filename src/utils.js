@@ -1,5 +1,22 @@
 import update from 'immutability-helper';
 
+export function throttle(callback: Function, wait: number) {
+  let timeout = null;
+  let callbackArgs = null;
+
+  const later = () => {
+    callback(...callbackArgs);
+    timeout = null;
+  }
+
+  return function (...args) {
+    if (!timeout) {
+      callbackArgs = args;
+      timeout = setTimeout(later, wait);
+    }
+  };
+}
+
 export function convert(
   items: Array<{ id: number|string, parentId: number|string, index: number }>,
   parentId: number|string = 0,
