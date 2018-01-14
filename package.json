@@ -25,7 +25,7 @@
   "scripts": {
     "dev": "node ./server.js",
     "flow": "flow",
-    "lint": "$(npm bin)/eslint src site",
+    "lint": "$(npm bin)/eslint src docs/app",
     "build": "better-npm-run build:lib && better-npm-run build:dist && better-npm-run build:finally",
     "test": "$(npm bin)/istanbul cover --report text --report html $(npm bin)/_mocha -- --require babel-core/register",
     "prepare": "npm run build"

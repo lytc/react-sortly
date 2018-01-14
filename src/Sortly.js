@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import { decreaseTreeItem, increaseTreeItem, moveTreeItem, insert } from './utils';
+import { decreaseTreeItem, increaseTreeItem, moveTreeItem, findDescendants } from './utils';
 import Item from './Item';
 
 let reduceOffset = 0;
@@ -13,11 +13,11 @@ export default class Sortly extends Component {
     items: PropTypes.arrayOf(PropTypes.shape({
       path: PropTypes.array.isRequired,
     })).isRequired,
-    activeItemId: PropTypes.number,
     itemRenderer: PropTypes.func.isRequired,
     threshold: PropTypes.number,
     maxDepth: PropTypes.number,
     cancelOnDropOutside: PropTypes.bool,
+    onMove: PropTypes.func,
     onDragStart: PropTypes.func,
     ondDragEnd: PropTypes.func,
     onDrop: PropTypes.func,
@@ -26,10 +26,10 @@ export default class Sortly extends Component {
 
   static defaultProps = {
     component: 'div',
-    activeItemId: null,
     threshold: 20,
     maxDepth: Infinity,
     cancelOnDropOutside: false,
+    onMove: null,
     onDragStart: noop,
     ondDragEnd: noop,
     onDrop: noop,
@@ -49,10 +49,7 @@ export default class Sortly extends Component {
     const { items } = this.state;
     this.originalItems = items;
 
-
-    const dragItem = items[dragIndex];
-    const { id: dragId } = dragItem;
-    const descendants = items.filter(({ path }) => path.includes(dragId));
+    const descendants = findDescendants(items, dragIndex);
 
     if (descendants.length > 0) {
       const draggingDescendants = {};
@@ -81,6 +78,8 @@ export default class Sortly extends Component {
 
   handleMove = (dragIndex: number, hoverIndex: number, offsetX: number): number|null => {
     const { items } = this.state;
+    let updateFn;
+    let newIndex;
 
     if (dragIndex === hoverIndex) {
       const { threshold } = this.props;
@@ -92,7 +91,6 @@ export default class Sortly extends Component {
 
       // Move to the right, meaning decrease horizontal level
       // It now is a child of it previous sibling
-      let updateFn;
       if (offsetX > 0) {
         updateFn = decreaseTreeItem(items, dragIndex);
         if (!updateFn) {
@@ -107,18 +105,30 @@ export default class Sortly extends Component {
         reduceOffset += threshold;
       }
 
-      this.setState(update(this.state, {
-        items: updateFn,
-      }));
-
-      return hoverIndex;
+      newIndex = hoverIndex;
+    } else {
+      const result = moveTreeItem(items, dragIndex, hoverIndex);
+      updateFn = result.updateFn; // eslint-disable-line prefer-destructuring
+      newIndex = result.newIndex; // eslint-disable-line prefer-destructuring
     }
 
-    const { updateFn, newIndex } = moveTreeItem(items, dragIndex, hoverIndex);
-
-    this.setState(update(this.state, {
+    const newState = update(this.state, {
       items: updateFn,
-    }));
+    });
+
+    if (this.props.onMove) {
+      const result = this.props.onMove(newState.items, dragIndex, newIndex);
+
+      if (!result) {
+        return null;
+      }
+
+      if (result !== true) {
+        newState.items = result;
+      }
+    }
+
+    this.setState(newState);
 
     return newIndex;
   }
@@ -128,38 +138,12 @@ export default class Sortly extends Component {
     this.change();
   }
 
-  handleRemoveItem = (index: number) => {
-    const { items } = this.state;
-
-    // remove item and it descendants
-    const item = this.state.items[index];
-    const descendants = items.filter(({ path }) => path.includes(item.id));
-
-    this.setState(update(this.state, {
-      items: { $splice: [[index, 1 + descendants.length]] },
-    }), () => this.change());
-  }
-
-  add = (itemData: { id: number|string }) => {
-    const item = { ...itemData, path: [] };
-    this.setState(update(this.state, {
-      items: { $push: [item] },
-    }), () => this.change());
-  }
-
-  insertNextTo = (targetIndex: number, itemData: { id: number|string }) => {
-    const updateFn = insert(this.state.items, targetIndex, itemData);
-    this.setState(update(this.state, {
-      items: updateFn,
-    }), () => this.change());
-  }
-
   change = () => {
     this.props.onChange(this.state.items);
   }
 
   render() {
-    const { component: Comp, maxDepth, activeItemId, itemRenderer } = this.props;
+    const { component: Comp, itemRenderer } = this.props;
     const { items, draggingDescendants } = this.state;
 
     return (
@@ -169,16 +153,12 @@ export default class Sortly extends Component {
             {...item}
             key={item.id}
             index={index}
-            active={item.id === activeItemId}
-            path={item.path}
             renderer={itemRenderer}
-            maxDepth={maxDepth}
             isClosestDragging={draggingDescendants[item.id] === true}
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
             onMove={this.handleMove}
             onDrop={this.handleDrop}
-            onRemove={this.handleRemoveItem}
           />
         ))}
       </Comp>

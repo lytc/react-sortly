@@ -1,7 +1,9 @@
 import { expect } from 'chai';
 import update from 'immutability-helper';
 
-import { convert, buildTree, flatten, increaseTreeItem, decreaseTreeItem, moveTreeItem, insert } from '../src/utils';
+import {
+  convert, buildTree, flatten, findDescendants, increaseTreeItem, decreaseTreeItem, moveTreeItem, add, insert, remove,
+} from '../src/utils';
 
 describe('utils', () => {
   it('#convert should work correctly', () => {
@@ -70,6 +72,21 @@ describe('utils', () => {
     ];
 
     expect(flatten(items)).to.deep.equal(expected);
+  });
+
+  it('#findDescendants should work correctly', () => {
+    const items = [
+      { id: 1, path: [] },
+      { id: 2, path: [1] },
+      { id: 3, path: [1, 2] },
+    ];
+
+    const expected = [
+      { id: 2, path: [1] },
+      { id: 3, path: [1, 2] },
+    ];
+
+    expect(findDescendants(items, 0)).to.deep.equal(expected);
   });
 
   describe('#increaseTreeItem', () => {
@@ -168,6 +185,20 @@ describe('utils', () => {
     });
   });
 
+  it('#add should work correctly', () => {
+    const items = [
+      { id: 1, path: [] },
+      { id: 2, path: [1] },
+    ];
+    const expected = [
+      { id: 1, path: [] },
+      { id: 2, path: [1] },
+      { id: 3, path: [], name: 'foo' },
+    ];
+
+    expect(add(items, { id: 3, name: 'foo' })).to.deep.equal(expected);
+  });
+
   it('#insert should work correctly', () => {
     const items = [
       { id: 1, path: [] },
@@ -186,6 +217,21 @@ describe('utils', () => {
       { id: 4, path: [2] },
     ];
 
-    expect(update(items, insert(items, 2, itemData))).to.deep.equal(expected);
+    expect(insert(items, 2, itemData)).to.deep.equal(expected);
+  });
+
+  it('#remove should work correctly', () => {
+    const items = [
+      { id: 1, path: [] },
+      { id: 2, path: [] },
+      { id: 3, path: [2] },
+      { id: 4, path: [2, 3] },
+    ];
+
+    const expected = [
+      { id: 1, path: [] },
+    ];
+
+    expect(remove(items, 1)).to.deep.equal(expected);
   });
 });

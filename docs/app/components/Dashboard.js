@@ -91,7 +91,7 @@ const ItemRenderer = (props) => {
     name, path, connectDragSource, connectDropTarget,
     isDragging, isClosestDragging,
   } = props;
-  const style = {
+  const style = { // eslint-disable-line no-shadow
     ...itemStyle,
     ...(isDragging || isClosestDragging ? muteStyle : null),
     marginLeft: path.length * 30,
@@ -139,7 +139,7 @@ export default class Dashboard extends Component {
         <br />
         <h2>Installation</h2>
         <p><code>npm install --save react-sortly react-dnd react-dnd-html5-backend</code></p>
-        <h2>What's It Look Like?</h2>
+        <h2>What&apos;s It Look Like?</h2>
         <br />
         <div className="row">
           <div className="col-12 col-lg-6">

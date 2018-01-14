@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { name } from 'faker/locale/en';
-import Sortly, { convert } from 'react-sortly';
+import Sortly, { convert, add, insert, remove } from 'react-sortly';
 
 import ItemRenderer from './ItemRenderer';
 import DumpData from '../DumpData';
@@ -34,22 +34,24 @@ export default class Advanced extends Component {
 
   handleClickAddNewItem = () => {
     const id = generateId();
-    const newItemData = { id, name: name.findName() };
+    const newItemData = { id, name: '' };
 
-    this.tree.add(newItemData);
+    this.setState({ items: add(this.state.items, newItemData) });
     this.setState({ activeItemId: id });
   }
 
   handleReturn = (targetIndex) => {
     const id = generateId();
-    const newItemData = { id, name: name.findName() };
+    const newItemData = { id, name: '' };
 
-    this.tree.insertNextTo(targetIndex, newItemData);
-    this.setState({ activeItemId: id });
+    this.setState({
+      items: insert(this.state.items, targetIndex, newItemData),
+      activeItemId: id,
+    });
   }
 
-  refTree = (tree) => {
-    this.tree = tree;
+  handleRemove = (index) => {
+    this.setState({ items: remove(this.state.items, index) });
   }
 
   renderItem = props => (
@@ -58,6 +60,7 @@ export default class Advanced extends Component {
       active={props.id === this.state.activeItemId}
       onChange={this.handleChangeItem}
       onReturn={this.handleReturn}
+      onRemove={this.handleRemove}
     />
   )
 
@@ -72,7 +75,6 @@ export default class Advanced extends Component {
             <br />
             <br />
             <Sortly
-              ref={this.refTree}
               items={items}
               itemRenderer={this.renderItem}
               onChange={this.handleChange}

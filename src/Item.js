@@ -6,11 +6,15 @@ import { throttle } from './utils';
 class Item extends PureComponent {
   static propTypes = {
     renderer: PropTypes.func.isRequired,
+    onDragStart: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
+    onMove: PropTypes.func.isRequired,
+    onDrop: PropTypes.func.isRequired,
   }
 
   render() {
-    const { renderer: Renderer } = this.props;
-    return <Renderer {...this.props} />;
+    const { renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, ...props } = this.props;
+    return <Renderer {...props} />;
   }
 }
 
