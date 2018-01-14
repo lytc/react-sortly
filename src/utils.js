@@ -9,7 +9,7 @@ export function throttle(callback: Function, wait: number) {
     timeout = null;
   };
 
-  return function (...args) {
+  return function run(...args) {
     if (!timeout) {
       callbackArgs = args;
       timeout = setTimeout(later, wait);
@@ -17,6 +17,13 @@ export function throttle(callback: Function, wait: number) {
   };
 }
 
+/**
+ * Convert the raw item list to the Sortly item list
+ * @param {Array} items The raw item list
+ * @param {String} parentId The parent id property. Default to "parentId"
+ * @param {Array} path The parent path
+ * @return {Array}
+ */
 export function convert(
   items: Array<{ id: number|string, parentId: number|string, index: number }>,
   parentId: number|string = 0,
@@ -39,6 +46,11 @@ export function convert(
   return result;
 }
 
+/**
+ * Convert the Sortly item list to the tree struct
+ * @param {Array} items The Sortly item list
+ * @return {Array}
+ */
 export function buildTree(
   items: Array<{ id: number|string,
   path: Array<number|string> }>,
@@ -59,6 +71,14 @@ export function buildTree(
   return tree;
 }
 
+/**
+ * Convert the Sortly item list to the raw item list
+ * Useful when you want to convert the item list to store into database
+ * @param {Array} items The Sortly item list
+ * @param {String} parentIdPropName The parent id property name. Default to "parentId"
+ * @param {String} indexPropName The index property name. Default to "index"
+ * @return {Array}
+ */
 export function flatten(
   items: Array<{ path: Array<number|string> }>,
   parentIdPropName: string = 'parentId',
@@ -79,6 +99,23 @@ export function flatten(
   });
 }
 
+/**
+ * Find item descendants
+ * @param {Array} items The item list
+ * @param {Number} index The item position
+ * @return {Array.<{path: Array.<number|string>}>}
+ */
+export function findDescendants(items: Array<{ path: Array<number|string> }>, index: number): Array {
+  const { id } = items[index];
+  return items.filter(({ path }) => path.includes(id));
+}
+
+/**
+ * Increase the tree item to 1 level depth
+ * @param {Array} items The item list
+ * @param {Number} itemIndex The position of the item to increase
+ * @return {null|Object}
+ */
 export function increaseTreeItem(items: Array<{ path: Array<number|string> }>, itemIndex: number): Object|null {
   const updateFn = {};
   const item = items[itemIndex];
@@ -105,7 +142,7 @@ export function increaseTreeItem(items: Array<{ path: Array<number|string> }>, i
   updateFn[itemIndex] = { path: { $set: newPath } };
 
   // also needs to update it descendants path
-  const descendants = items.filter(({ path }) => path.includes(id));
+  const descendants = findDescendants(items, itemIndex);
   descendants.forEach((descendantItem) => {
     updateFn[items.indexOf(descendantItem)] = {
       path: { $splice: [[0, descendantItem.path.indexOf(id), ...newPath]] },
@@ -114,6 +151,12 @@ export function increaseTreeItem(items: Array<{ path: Array<number|string> }>, i
   return updateFn;
 }
 
+/**
+ * Decrease the tree item to 1 level depth
+ * @param {Array} items The item list
+ * @param {Number} itemIndex The position of the item to decrease
+ * @return {null|Object}
+ */
 export function decreaseTreeItem(items: Array<{ path: Array<number|string> }>, itemIndex: number): Object|null {
   const updateFn = {};
   const item = items[itemIndex];
@@ -136,7 +179,7 @@ export function decreaseTreeItem(items: Array<{ path: Array<number|string> }>, i
   updateFn[itemIndex] = { path: { $set: newPath } };
 
   // also needs to update it descendants path
-  const descendants = items.filter(({ path }) => path.includes(id));
+  const descendants = findDescendants(items, itemIndex);
   descendants.forEach((descendantItem) => {
     updateFn[items.indexOf(descendantItem)] = {
       path: { $splice: [[0, descendantItem.path.indexOf(id), ...newPath]] },
@@ -145,13 +188,20 @@ export function decreaseTreeItem(items: Array<{ path: Array<number|string> }>, i
   return updateFn;
 }
 
+/**
+ * Move an item to a new position
+ * @param {Array} items The item list
+ * @param {Number} sourceIndex The current position of the item to move
+ * @param {Number} targetIndex The new position of the item to move
+ * @return {{updateFn: {}, newIndex: number}}
+ */
 export function moveTreeItem(
   items: Array<{ path: Array<number|string> }>, sourceIndex: number, targetIndex: number,
 ): Object|null {
   let sourceItem = items[sourceIndex];
   const targetItem = items[targetIndex];
   const { id: dragId } = sourceItem;
-  let descendants = items.filter(({ path }) => path.includes(dragId));
+  let descendants = findDescendants(items, sourceIndex);
 
   const updateFn = {};
 
@@ -180,7 +230,7 @@ export function moveTreeItem(
       [targetIndex, 0, sourceItem, ...descendants],
     ];
   } else { // move down
-    const hoverDescendants = items.filter(item => item.path.includes(targetItem.id));
+    const hoverDescendants = findDescendants(items, targetIndex);
     newIndex = (targetIndex + hoverDescendants.length) - descendants.length;
     updateFn.$splice = [
       // remove it and descendants from the list
@@ -193,12 +243,42 @@ export function moveTreeItem(
   return { updateFn, newIndex };
 }
 
+/**
+ * Add a new item to the bottom of the list
+ * @param {Array} items The item list
+ * @param {Object} itemData The item data
+ * @return {Array}
+ */
+export function add(items: Array<{ path: Array<number|string> }>, itemData: { id: number|string }): Array {
+  const item = { ...itemData, path: [] };
+  return update(items, { $push: [item] });
+}
+
+/**
+ * Insert a new item to the list
+ * @param {Array} items The item list
+ * @param {Number} targetIndex The position to insert into
+ * @param {Object} itemData The item data
+ * @return {Array}
+ */
 export function insert(items: Array<{ path: Array<number|string> }>,
   targetIndex: number, itemData: { id: number|string }): Object {
   const currentItemAtIndex = items[targetIndex];
-  const currentItemDescendants = items.filter(({ path }) => path.includes(currentItemAtIndex.id));
+  const currentItemDescendants = findDescendants(items, targetIndex);
   const path = [...currentItemAtIndex.path];
   const newItem = { ...itemData, path };
 
-  return { $splice: [[targetIndex + currentItemDescendants.length + 1, 0, newItem]] };
+  return update(items, { $splice: [[targetIndex + currentItemDescendants.length + 1, 0, newItem]] });
+}
+
+/**
+ * Remove an item and it descendants from the list
+ * @param {Array} items The item list
+ * @param {Number} index The item index
+ * @return {Array}
+ */
+export function remove(items: Array<{ path: Array<number|string> }>, index: number): Array {
+  const descendants = findDescendants(items, index);
+
+  return update(items, { $splice: [[index, 1 + descendants.length]] });
 }

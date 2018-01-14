@@ -20,7 +20,7 @@ export default class StressTest extends Component {
   handleChangeNumItems = (e) => {
     const numItems = parseInt(e.target.value, 10);
     const validNumber = !isNaN(numItems);
-    this.setState({ numItems: validNumber ? numItems: '', generating: validNumber }, () => {
+    this.setState({ numItems: validNumber ? numItems : '', generating: validNumber }, () => {
       if (validNumber) {
         this.generate();
       }

@@ -1,0 +1,39 @@
+.container {
+  .body {
+    padding: 0px 10px;
+    cursor: move;
+  }
+
+  &.mute {
+    .body {
+      opacity: .3;
+    }
+  }
+}
+
+.folder {
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.file {
+  overflow: hidden;
+  height: 28px;
+  transition: height .3s;
+
+  &.collapsed {
+    height: 0;
+  }
+}
+
+.toggleCollapseHandle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon {
+  width: 36px;
+  padding: 0 10px;
+}
