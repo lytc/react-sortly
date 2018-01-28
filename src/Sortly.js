@@ -64,16 +64,18 @@ export default class Sortly extends Component {
   handleDragEnd = (dragIndex: number, didDrop: boolean) => {
     const { cancelOnDropOutside, ondDragEnd } = this.props;
 
-    if (cancelOnDropOutside && !didDrop) {
-      // restore
-      this.setState({ items: this.originalItems });
-      this.originalItems = null;
-    }
-
     ondDragEnd(dragIndex, didDrop);
 
     reduceOffset = 0;
     this.setState({ draggingDescendants: {} });
+
+    if (cancelOnDropOutside && !didDrop) {
+      // restore
+      this.setState({ items: this.originalItems });
+      this.originalItems = null;
+    } else {
+      this.change();
+    }
   }
 
   handleMove = (dragIndex: number, hoverIndex: number, offsetX: number): number|null => {
@@ -135,7 +137,6 @@ export default class Sortly extends Component {
 
   handleDrop = (dragIndex: number, dropIndex: number) => {
     this.props.onDrop(dragIndex, dropIndex);
-    this.change();
   }
 
   change = () => {
