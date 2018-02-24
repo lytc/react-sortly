@@ -1,6 +1,6 @@
 {
   "name": "react-sortly",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React nested sortable component",
   "author": "",
   "main": "lib/index.js",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/lytc/react-sortly#readme",
   "scripts": {
-    "dev": "node ./server.js",
+    "start": "node ./server.js",
     "flow": "flow",
     "lint": "$(npm bin)/eslint src docs/app",
     "build": "better-npm-run build:lib && better-npm-run build:dist && better-npm-run build:finally",
