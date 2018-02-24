@@ -5,8 +5,8 @@ const examples = {
 import { convert } from 'react-sortly';
 
 const rawItems = [
-  { id: 1, parentId: null, index: 0, name: 'Category 1' },
-  { id: 2, parentId: null, index: 1, name: 'Category 2' },
+  { id: 1, parentId: 0, index: 0, name: 'Category 1' },
+  { id: 2, parentId: 0, index: 1, name: 'Category 2' },
   { id: 4, parentId: 1, index: 1, name: 'Item 1' },
   { id: 5, parentId: 1, index: 0, name: 'Item 2' },
 ];
