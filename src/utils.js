@@ -20,17 +20,22 @@ export function throttle(callback: Function, wait: number) {
 /**
  * Convert the raw item list to the Sortly item list
  * @param {Array} items The raw item list
- * @param {String} parentId The parent id property. Default to "parentId"
+ * @param {Number|String} parentId The parentId value
  * @param {Array} path The parent path
  * @return {Array}
  */
 export function convert(
   items: Array<{ id: number|string, parentId: number|string, index: number }>,
-  parentId: number|string = 0,
+  parentId: number|string,
   path: Array<number|string> = [],
 ): Array<{ id: number|string, path: Array<number|string> }> {
   const result = items
-    .filter(item => item.parentId === parentId)
+    .filter((item) => {
+      if (parentId === undefined) {
+        return !item.parentId;
+      }
+      return item.parentId === parentId;
+    })
     .sort((a, b) => a.index - b.index)
     .map((item) => {
       const { index, parentId: parent, ...data } = item;

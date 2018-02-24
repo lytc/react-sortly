@@ -6,10 +6,10 @@ import {
 } from '../src/utils';
 
 describe('utils', () => {
-  it('#convert should work correctly', () => {
+  it('#convert should work correctly if parentId prop is omit in the first level items', () => {
     const items = [
-      { id: 1, parentId: 0, index: 0 },
-      { id: 2, parentId: 0, index: 1 },
+      { id: 1, index: 0 },
+      { id: 2, index: 1 },
       { id: 3, parentId: 1, index: 0 },
       { id: 4, parentId: 1, index: 1 },
       { id: 5, parentId: 3, index: 0 },
@@ -25,6 +25,29 @@ describe('utils', () => {
 
     expect(convert(items)).to.deep.equal(expected);
   });
+
+  [{ name: 'null', value: null }, { name: 'zero', value: 0 }, { name: 'an empty string', value: '' }]
+    .forEach(({ name, value }) => {
+      it(`#convert should work correctly if parentId of the first level items is ${name}`, () => {
+        const items = [
+          { id: 1, parentId: value, index: 0 },
+          { id: 2, parentId: value, index: 1 },
+          { id: 3, parentId: 1, index: 0 },
+          { id: 4, parentId: 1, index: 1 },
+          { id: 5, parentId: 3, index: 0 },
+        ];
+
+        const expected = [
+          { id: 1, path: [] },
+          { id: 3, path: [1] },
+          { id: 5, path: [1, 3] },
+          { id: 4, path: [1] },
+          { id: 2, path: [] },
+        ];
+
+        expect(convert(items)).to.deep.equal(expected);
+      });
+    });
 
   it('#buildTree should work correctly', () => {
     const items = [
