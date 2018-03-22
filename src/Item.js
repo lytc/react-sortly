@@ -1,22 +1,18 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import { throttle } from './utils';
 
-class Item extends PureComponent {
-  static propTypes = {
-    renderer: PropTypes.func.isRequired,
-    onDragStart: PropTypes.func.isRequired,
-    onDragEnd: PropTypes.func.isRequired,
-    onMove: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired,
-  }
+const Item = ({ renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, ...props }) =>
+  <Renderer {...props} />;
 
-  render() {
-    const { renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, ...props } = this.props;
-    return <Renderer {...props} />;
-  }
-}
+Item.propTypes = {
+  renderer: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.func.isRequired,
+  onMove: PropTypes.func.isRequired,
+  onDrop: PropTypes.func.isRequired,
+};
 
 const itemTarget = {
   hover: throttle((props, monitor, component) => {
