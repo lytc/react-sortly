@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const styleLoader = { loader: 'style-loader', options: {} };
@@ -29,7 +28,11 @@ const cssLoader = {
 };
 
 const config = {
+  mode: process.env.NODE_ENV,
   devtool: 'sourcemap',
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production',
+  },
   entry: {
     Sortly: [`${__dirname}/src/index`],
     app: [`${__dirname}/docs/app/index`],
@@ -68,15 +71,5 @@ const config = {
   },
 };
 
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false,
-      },
-    }),
-  );
-}
 
 module.exports = config;

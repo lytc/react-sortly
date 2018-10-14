@@ -164,7 +164,7 @@ describe('utils', () => {
       expect(update(items, decreaseTreeItem(items, 1))).to.deep.equal(expected);
     });
 
-    it('should returns null if it don\' have prev sibling', () => {
+    it('should returns null if it don\'t have prev sibling', () => {
       const items = [
         { id: 1, path: [] },
         { id: 2, path: [1] },
