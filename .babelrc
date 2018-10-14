@@ -6,8 +6,7 @@
     },
     "production": {
       "plugins": [
-        "transform-flow-strip-types",
-        ["transform-react-remove-prop-types", { "removeImport": true }]
+        "transform-flow-strip-types"
       ]
     }
   }
