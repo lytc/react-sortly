@@ -1,6 +1,6 @@
 {
   "name": "react-sortly",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "React nested sortable component",
   "author": "",
   "main": "lib/index.js",
@@ -51,7 +51,7 @@
     "react-dnd": "*"
   },
   "devDependencies": {
-    "autoprefixer": "^9.1.5",
+    "autoprefixer": "^9.2.1",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "7",
@@ -77,11 +77,11 @@
     "faker": "^4.1.0",
     "flow-bin": "^0.83.0",
     "flow-runtime": "^0.17.0",
-    "highlight.js": "^9.12.0",
+    "highlight.js": "^9.13.1",
     "istanbul": "^1.1.0-alpha.1",
     "lodash.debounce": "^4.0.8",
     "mocha": "^5.2.0",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.9.4",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
@@ -94,8 +94,8 @@
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4",
     "style-loader": "^0.23.1",
-    "webpack": "^4.20.2",
-    "webpack-bundle-analyzer": "^3.0.2",
+    "webpack": "^4.21.0",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hmr": "^1.0.2"

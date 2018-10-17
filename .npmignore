@@ -4,6 +4,7 @@ docs
 .eslintrc
 .flowconfig
 .nvmrc
+npm-shrinkwrap.json
 bundle-analyze.html
 postcss.config.js
 server.js

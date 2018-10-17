@@ -1,3 +1,9 @@
+## [1.2.1] 2018-10-18
+### Changed
+- Upgrade package dependencies
+### Fixed
+- Ignore npmshrinkwrap from .npmignore
+
 ## [1.2.0] 2018-10-14
 ### Changed
 - Upgrade package dependencies
