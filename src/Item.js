@@ -1,66 +1,80 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
-import { throttle } from './utils';
 
-const Item = ({ renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, ...props }) =>
-  <Renderer {...props} />;
+class Item extends Component {
+  static propTypes = {
+    renderer: PropTypes.func.isRequired,
+    onDragStart: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
+    onMove: PropTypes.func.isRequired,
+    onDrop: PropTypes.func.isRequired,
+    isOver: PropTypes.bool.isRequired,
+    dropTargetMonitor: PropTypes.shape({
+      getItem: PropTypes.func.isRequired,
+      getDifferenceFromInitialOffset: PropTypes.func.isRequired,
+    }).isRequired,
+  };
 
-Item.propTypes = {
-  renderer: PropTypes.func.isRequired,
-  onDragStart: PropTypes.func.isRequired,
-  onDragEnd: PropTypes.func.isRequired,
-  onMove: PropTypes.func.isRequired,
-  onDrop: PropTypes.func.isRequired,
-};
+  componentWillReceiveProps(nextProps) {
+    const { isOver } = this.props;
+    if (nextProps.isOver !== isOver) {
+      if (nextProps.isOver) {
+        this.reqAnimationFrameId = window.requestAnimationFrame(this.handleHover);
+      } else {
+        window.cancelAnimationFrame(this.reqAnimationFrameId);
+        this.reqAnimationFrameId = null;
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.reqAnimationFrameId) {
+      window.cancelAnimationFrame(this.reqAnimationFrameId);
+      this.reqAnimationFrameId = null;
+    }
+  }
+
+  handleHover = () => {
+    const {
+      index: hoverIndex, maxDepth, isClosestDragging, onMove,
+      dropTargetMonitor,
+    } = this.props;
+
+    if (!isClosestDragging) {
+      const dragItem = dropTargetMonitor.getItem();
+      const { index: dragIndex } = dragItem;
+
+      if (maxDepth !== 0 || dragIndex !== hoverIndex) {
+        // Determine mouse position
+        const initialOffset = dropTargetMonitor.getDifferenceFromInitialOffset();
+
+        // Time to actually perform the action
+        const dragNewIndex = onMove(dragIndex, hoverIndex, initialOffset.x);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        if (dragNewIndex !== null) {
+          const item = dropTargetMonitor.getItem();
+          item.index = dragNewIndex;
+        }
+      }
+    }
+
+    this.reqAnimationFrameId = window.requestAnimationFrame(this.handleHover);
+  }
+
+  render() {
+    const {
+      renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, dropTargetMonitor, isOver, isClosestDragging, ...props
+    } = this.props;
+    return <Renderer {...props} />;
+  }
+}
 
 const itemTarget = {
-  hover: throttle((props, monitor, component) => {
-    if (!component) {
-      return;
-    }
-
-    if (props.isClosestDragging) {
-      return;
-    }
-
-    const dragItem = monitor.getItem();
-
-    if (!dragItem) {
-      return;
-    }
-
-    const { index: dragIndex } = dragItem;
-    const { index: hoverIndex } = props;
-
-    if (props.maxDepth === 0 && dragIndex === hoverIndex) {
-      return;
-    }
-
-    // Determine mouse position
-    const clientOffset = monitor.getClientOffset();
-
-    if (!clientOffset) {
-      return;
-    }
-
-    const initialOffset = monitor.getDifferenceFromInitialOffset();
-
-    // Time to actually perform the action
-    const dragNewIndex = props.onMove(dragIndex, hoverIndex, initialOffset.x);
-    // dragItem.originalIndex = dragItem.index;
-    // dragItem.index = dragNewIndex;
-
-    // Note: we're mutating the monitor item here!
-    // Generally it's better to avoid mutations,
-    // but it's good here for the sake of performance
-    // to avoid expensive index searches.
-    if (dragNewIndex !== null) {
-      const item = monitor.getItem();
-      item.index = dragNewIndex;
-    }
-  }, 17),
-
   drop(props, monitor) {
     if (!monitor.didDrop()) {
       const dragItem = monitor.getItem();
@@ -72,7 +86,9 @@ const itemTarget = {
   },
 };
 
-const dropCollect = connect => ({
+const dropCollect = (connect, monitor) => ({
+  dropTargetMonitor: monitor,
+  isOver: monitor.isOver(),
   connectDropTarget: connect.dropTarget(),
 });
 

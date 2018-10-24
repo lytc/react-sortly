@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
-import { remove } from 'react-sortly';
 
 import style from './ItemRenderer.scss';
 

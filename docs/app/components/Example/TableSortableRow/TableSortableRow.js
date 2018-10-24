@@ -5,8 +5,8 @@ import Sortly from 'react-sortly';
 import ItemRenderer from './ItemRenderer';
 import DumpData from '../DumpData';
 
-const ITEMS = Array.from(Array(5).keys())
-  .map(index => ({
+const ITEMS = [...Array(5)]
+  .map((v, index) => ({
     id: index + 1,
     name: name.findName(),
     email: internet.email(),

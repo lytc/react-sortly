@@ -1,13 +1,17 @@
 {
-  "presets": [["env", { "targets": { "browsers": "last 2 versions" } }], "stage-0", "react"],
-  "env": {
-    "development": {
-      "plugins": [["flow-runtime"], "transform-decorators-legacy"]
-    },
-    "production": {
-      "plugins": [
-        "transform-flow-strip-types"
-      ]
-    }
-  }
+  "presets": [
+    ["@babel/env", {
+      "debug": true,
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 11"]
+      },
+      "useBuiltIns": "usage",
+      "modules": false
+    }],
+    "@babel/react"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-flow-strip-types"
+  ]
 }
