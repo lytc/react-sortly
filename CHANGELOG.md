@@ -1,3 +1,8 @@
+## [1.3.0] 2018-10-25
+### Changed
+- Support browser last 2 versions, IE >= 11
+- Improve performance
+
 ## [1.2.1] 2018-10-18
 ### Changed
 - Upgrade package dependencies

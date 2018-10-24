@@ -1,22 +1,5 @@
 import update from 'immutability-helper';
 
-export function throttle(callback: Function, wait: number) {
-  let timeout = null;
-  let callbackArgs = null;
-
-  const later = () => {
-    callback(...callbackArgs);
-    timeout = null;
-  };
-
-  return function run(...args) {
-    if (!timeout) {
-      callbackArgs = args;
-      timeout = setTimeout(later, wait);
-    }
-  };
-}
-
 /**
  * Convert the raw item list to the Sortly item list
  * @param {Array} items The raw item list
@@ -112,7 +95,7 @@ export function flatten(
  */
 export function findDescendants(items: Array<{ path: Array<number|string> }>, index: number): Array {
   const { id } = items[index];
-  return items.filter(({ path }) => path.includes(id));
+  return items.filter(({ path }) => path.indexOf(id) !== -1);
 }
 
 /**

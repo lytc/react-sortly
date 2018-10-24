@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { HashRouter, Route, Link } from 'react-router-dom';
 import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import classNames from 'classnames';
 
 import Dashboard from './Dashboard';
@@ -68,4 +69,4 @@ class App extends PureComponent { // eslint-disable-line react/prefer-stateless-
   }
 }
 
-export default DragDropContext(HTML5Backend)(App);
+export default DragDropContext(MultiBackend(HTML5toTouch))(App);
