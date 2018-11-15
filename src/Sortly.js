@@ -9,6 +9,7 @@ let reduceOffset = 0;
 const noop = () => {};
 export default class Sortly extends Component {
   static propTypes = {
+    type: PropTypes.string,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     items: PropTypes.arrayOf(PropTypes.shape({
       path: PropTypes.array.isRequired,
@@ -25,6 +26,7 @@ export default class Sortly extends Component {
   }
 
   static defaultProps = {
+    type: 'REACT_SORTLY',
     component: 'div',
     threshold: 20,
     maxDepth: Infinity,
@@ -144,7 +146,7 @@ export default class Sortly extends Component {
   }
 
   render() {
-    const { component: Comp, itemRenderer } = this.props;
+    const { type, component: Comp, itemRenderer } = this.props;
     const { items, draggingDescendants } = this.state;
 
     return (
@@ -153,6 +155,7 @@ export default class Sortly extends Component {
           <Item
             {...item}
             key={item.id}
+            type={type}
             index={index}
             renderer={itemRenderer}
             isClosestDragging={draggingDescendants[item.id] === true}
