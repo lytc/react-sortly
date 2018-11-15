@@ -1,3 +1,7 @@
+## [1.4.1] 2018-11-15
+### Added
+- Add id prop to drag data
+
 ## [1.4.0] 2018-11-15
 ### Added
 - Ability to custom dnd type
