@@ -94,10 +94,10 @@ const dropCollect = (connect, monitor) => ({
 
 const itemSource = {
   beginDrag(props) {
-    const { index } = props;
+    const { index, id } = props;
     props.onDragStart(index);
 
-    return { index };
+    return { index, id };
   },
 
   endDrag(props, monitor) {
