@@ -1,4 +1,4 @@
-## [Unreleased]
+## [1.4.0] 2018-11-15
 ### Added
 - Ability to custom dnd type
 ### Fixed
