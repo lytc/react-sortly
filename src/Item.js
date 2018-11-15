@@ -68,7 +68,7 @@ class Item extends Component {
 
   render() {
     const {
-      renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, dropTargetMonitor, isOver, isClosestDragging, ...props
+      renderer: Renderer, onDragStart, onDragEnd, onMove, onDrop, dropTargetMonitor, isOver, ...props
     } = this.props;
     return <Renderer {...props} />;
   }
@@ -113,4 +113,6 @@ const dragCollect = (connect, monitor) => ({
   isDragging: monitor.isDragging(),
 });
 
-export default DropTarget('TREE_ITEM', itemTarget, dropCollect)(DragSource('TREE_ITEM', itemSource, dragCollect)(Item));
+export default DropTarget(props => props.type, itemTarget, dropCollect)(
+  DragSource(props => props.type, itemSource, dragCollect)(Item),
+);
