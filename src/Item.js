@@ -97,7 +97,7 @@ const itemSource = {
     const { index, id } = props;
     props.onDragStart(index);
 
-    return { index, id };
+    return { index, originalIndex: index, id };
   },
 
   endDrag(props, monitor) {

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
+import { DropTarget } from 'react-dnd';
 
 import { decreaseTreeItem, increaseTreeItem, moveTreeItem, findDescendants } from './utils';
 import Item from './Item';
 
+const DEFAULT_TYPE = 'REACT_SORTLY';
 let reduceOffset = 0;
 const noop = () => {};
-export default class Sortly extends Component {
+class Sortly extends Component {
   static propTypes = {
-    type: PropTypes.string,
+    type: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     items: PropTypes.arrayOf(PropTypes.shape({
       path: PropTypes.array.isRequired,
@@ -17,19 +19,25 @@ export default class Sortly extends Component {
     itemRenderer: PropTypes.func.isRequired,
     threshold: PropTypes.number,
     maxDepth: PropTypes.number,
+    cancelOnDragOutside: PropTypes.bool,
     cancelOnDropOutside: PropTypes.bool,
     onMove: PropTypes.func,
     onDragStart: PropTypes.func,
     ondDragEnd: PropTypes.func,
     onDrop: PropTypes.func,
+    monitor: PropTypes.shape({
+      getItem: PropTypes.func.isRequired,
+    }).isRequired,
+    isOver: PropTypes.bool.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    type: 'REACT_SORTLY',
     component: 'div',
     threshold: 20,
     maxDepth: Infinity,
+    cancelOnDragOutside: false,
     cancelOnDropOutside: false,
     onMove: null,
     onDragStart: noop,
@@ -42,6 +50,14 @@ export default class Sortly extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.items !== this.props.items) {
       this.setState({ items: nextProps.items });
+    }
+
+    if (nextProps.isOver !== this.props.isOver) {
+      if (nextProps.isOver) {
+        this.handleEnter();
+      } else {
+        this.handleLeave();
+      }
     }
   }
 
@@ -137,6 +153,20 @@ export default class Sortly extends Component {
     return newIndex;
   }
 
+  handleEnter = () => {
+
+  }
+
+  handleLeave = () => {
+    const { cancelOnDragOutside, monitor } = this.props;
+
+    if (cancelOnDragOutside) {
+      const dragData = monitor.getItem();
+      dragData.index = dragData.originalIndex;
+      this.setState({ items: this.originalItems });
+    }
+  }
+
   handleDrop = (dragIndex: number, dropIndex: number) => {
     this.props.onDrop(dragIndex, dropIndex);
   }
@@ -146,10 +176,10 @@ export default class Sortly extends Component {
   }
 
   render() {
-    const { type, component: Comp, itemRenderer } = this.props;
+    const { type, component: Comp, itemRenderer, connectDropTarget } = this.props;
     const { items, draggingDescendants } = this.state;
 
-    return (
+    return connectDropTarget(
       <Comp>
         {items.map((item, index) => (
           <Item
@@ -165,7 +195,24 @@ export default class Sortly extends Component {
             onDrop={this.handleDrop}
           />
         ))}
-      </Comp>
+      </Comp>,
     );
   }
 }
+
+const spec = {
+
+};
+
+const collect = (connect, monitor) => ({
+  monitor,
+  isOver: monitor.isOver(),
+  connectDropTarget: connect.dropTarget(),
+});
+
+const WithDropTarget = DropTarget(props => props.type, spec, collect)(Sortly);
+WithDropTarget.defaultProps = {
+  type: DEFAULT_TYPE,
+};
+
+export default WithDropTarget;

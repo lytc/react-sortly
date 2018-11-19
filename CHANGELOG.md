@@ -1,3 +1,7 @@
+## [1.5.0] 2018-11-20
+### Added
+- Option to cancel on drag outside
+
 ## [1.4.1] 2018-11-15
 ### Added
 - Add id prop to drag data
