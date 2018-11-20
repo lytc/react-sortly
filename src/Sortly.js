@@ -80,17 +80,20 @@ class Sortly extends Component {
   }
 
   handleDragEnd = (dragIndex: number, didDrop: boolean) => {
-    const { cancelOnDropOutside, ondDragEnd } = this.props;
+    const { cancelOnDropOutside, ondDragEnd, monitor } = this.props;
 
     ondDragEnd(dragIndex, didDrop);
 
     reduceOffset = 0;
     this.setState({ draggingDescendants: {} });
-
-    if (cancelOnDropOutside && !didDrop) {
-      // restore
-      this.setState({ items: this.originalItems });
-      this.originalItems = null;
+    if (cancelOnDropOutside) {
+      if (!monitor.didDrop()) {
+        // restore
+        this.setState({ items: this.originalItems });
+        this.originalItems = null;
+      } else {
+        this.change();
+      }
     } else {
       this.change();
     }
@@ -160,7 +163,7 @@ class Sortly extends Component {
   handleLeave = () => {
     const { cancelOnDragOutside, monitor } = this.props;
 
-    if (cancelOnDragOutside) {
+    if (cancelOnDragOutside && !monitor.didDrop()) {
       const dragData = monitor.getItem();
       dragData.index = dragData.originalIndex;
       this.setState({ items: this.originalItems });

@@ -1,3 +1,7 @@
+## [Unreleased]
+## Fixed
+- Fix cancelOnDragOutside option
+
 ## [1.5.0] 2018-11-20
 ### Added
 - Option to cancel on drag outside
