@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["Sortly"],"mappings":"AAAA,OAAOA,MAAP,MAAmB,UAAnB;AAEA,eAAeA,MAAf;AACA,cAAc,SAAd","sourcesContent":["import Sortly from './Sortly';\n\nexport default Sortly;\nexport * from './utils';\n"],"file":"index.js"}
