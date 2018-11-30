@@ -113,6 +113,6 @@ const dragCollect = (connect, monitor) => ({
   isDragging: monitor.isDragging(),
 });
 
-export default DropTarget(props => props.type, itemTarget, dropCollect)(
-  DragSource(props => props.type, itemSource, dragCollect)(Item),
+export default DropTarget(props => props.__dndType, itemTarget, dropCollect)(
+  DragSource(props => props.__dndType, itemSource, dragCollect)(Item),
 );

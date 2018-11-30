@@ -188,7 +188,7 @@ class Sortly extends Component {
           <Item
             {...item}
             key={item.id}
-            type={type}
+            __dndType={type}
             index={index}
             renderer={itemRenderer}
             isClosestDragging={draggingDescendants[item.id] === true}
