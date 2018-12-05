@@ -13,5 +13,17 @@
   "plugins": [
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-transform-flow-strip-types"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "@babel/transform-modules-commonjs"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "@babel/transform-modules-commonjs"
+      ]
+    }
+  }
 }
