@@ -1,6 +1,6 @@
 {
   "name": "react-sortly",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "React nested sortable component",
   "author": "",
   "main": "lib/index.js",
@@ -48,7 +48,8 @@
   "peerDependencies": {
     "prop-types": "*",
     "react": ">=15.0.0",
-    "react-dnd": "*"
+    "react-dnd": "*",
+    "core-js": "*"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
