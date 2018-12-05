@@ -1,4 +1,4 @@
-## [Unreleased]
+## [1.5.2] 2018-12-05
 ## Fixed
 - Build
 
