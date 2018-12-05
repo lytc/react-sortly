@@ -1,3 +1,7 @@
+## [1.5.2] 2018-12-05
+## Fixed
+- Build
+
 ## [1.5.1] 2018-11-20
 ## Fixed
 - Fix cancelOnDragOutside option

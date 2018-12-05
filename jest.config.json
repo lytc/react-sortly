@@ -1,0 +1,14 @@
+{
+  "clearMocks": true,
+  "coverageDirectory": "coverage",
+  "coverageReporters": [
+    "lcov"
+  ],
+  "forceCoverageMatch": ["<rootDir>/src"],
+  "roots": [
+    "<rootDir>/test"
+  ],
+  "testRegex": ".*spec\\.(js|jsx)$",
+  "testURL": "http://localhost",
+  "transformIgnorePatterns": ["/node_modules/"]
+}
