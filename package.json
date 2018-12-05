@@ -48,7 +48,8 @@
   "peerDependencies": {
     "prop-types": "*",
     "react": ">=15.0.0",
-    "react-dnd": "*"
+    "react-dnd": "*",
+    "core-js": "*"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
