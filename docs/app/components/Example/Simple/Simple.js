@@ -17,7 +17,6 @@ export default class Simple extends Component {
   state = { items: ITEMS }
 
   handleChange = (items) => {
-    console.log('change')
     this.setState({ items });
   }
 
@@ -28,7 +27,7 @@ export default class Simple extends Component {
         <h1 className="page-title">Simple</h1>
         <div className="row">
           <div className="col-12 col-lg-8 col-xl-6">
-            <Sortly items={items} itemRenderer={ItemRenderer} onChange={this.handleChange} cancelOnDropOutside cancelOnDragOutside />
+            <Sortly items={items} maxDepth={2} itemRenderer={ItemRenderer} onChange={this.handleChange} />
           </div>
         </div>
         <hr />
