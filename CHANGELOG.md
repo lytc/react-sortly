@@ -1,4 +1,4 @@
-## [Unreleased]
+## [1.5.4] 2018-12-16
 ## Added
 - License
 ## Fixed
