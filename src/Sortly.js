@@ -105,7 +105,7 @@ class Sortly extends Component {
     let newIndex;
 
     if (dragIndex === hoverIndex) {
-      const { threshold } = this.props;
+      const { threshold, maxDepth } = this.props;
 
       // Check that if it move horizontally
       if (Math.abs(offsetX + reduceOffset) < threshold) {
@@ -115,6 +115,14 @@ class Sortly extends Component {
       // Move to the right, meaning decrease horizontal level
       // It now is a child of it previous sibling
       if (offsetX > 0) {
+        // maxDepth check
+        if (
+          maxDepth < Infinity
+          && [items[dragIndex], ...findDescendants(items, dragIndex)].some(({ path }) => path.length >= maxDepth)
+        ) {
+          return null;
+        }
+
         updateFn = decreaseTreeItem(items, dragIndex);
         if (!updateFn) {
           return null;

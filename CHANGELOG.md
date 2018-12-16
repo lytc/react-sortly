@@ -1,7 +1,12 @@
+## [1.5.4] 2018-12-16
+## Added
+- License
+## Fixed
+- maxDepth
+
 ## [1.5.3] 2018-12-05
 ## Fixed
 - Add core-js as per dependency
-
 
 ## [1.5.2] 2018-12-05
 ## Fixed
