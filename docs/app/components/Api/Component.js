@@ -122,7 +122,7 @@ const ApiComponent = () => (
           <td>A function invoked whenever the drag operation has been started</td>
         </tr>
         <tr>
-          <td>ondDragEnd</td>
+          <td>onDragEnd</td>
           <td>function</td>
           <td>null</td>
           <td>A function invoked whenever the drag operation has been finished</td>

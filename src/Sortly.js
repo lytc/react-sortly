@@ -23,7 +23,7 @@ class Sortly extends Component {
     cancelOnDropOutside: PropTypes.bool,
     onMove: PropTypes.func,
     onDragStart: PropTypes.func,
-    ondDragEnd: PropTypes.func,
+    onDragEnd: PropTypes.func,
     onDrop: PropTypes.func,
     monitor: PropTypes.shape({
       getItem: PropTypes.func.isRequired,
@@ -41,7 +41,7 @@ class Sortly extends Component {
     cancelOnDropOutside: false,
     onMove: null,
     onDragStart: noop,
-    ondDragEnd: noop,
+    onDragEnd: noop,
     onDrop: noop,
   }
 
@@ -80,9 +80,9 @@ class Sortly extends Component {
   }
 
   handleDragEnd = (dragIndex: number, didDrop: boolean) => {
-    const { cancelOnDropOutside, ondDragEnd, monitor } = this.props;
+    const { cancelOnDropOutside, onDragEnd, monitor } = this.props;
 
-    ondDragEnd(dragIndex, didDrop);
+    onDragEnd(dragIndex, didDrop);
 
     reduceOffset = 0;
     this.setState({ draggingDescendants: {} });
