@@ -1,3 +1,7 @@
+## [1.5.5] 2018-12-25
+### Fixed
+- onDragEnd typo
+
 ## [1.5.4] 2018-12-16
 ## Added
 - License
