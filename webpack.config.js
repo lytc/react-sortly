@@ -1,75 +1,38 @@
 const path = require('path');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const styleLoader = { loader: 'style-loader', options: {} };
-const postcssLoader = { loader: 'postcss-loader', options: {} };
-const sassLoader = { loader: 'sass-loader', options: {} };
-const cssLoader = {
-  loader: 'css-loader',
-  options: {
-    sourceMap: true,
-    minimize: {
-      autoprefixer: {
-        add: true,
-        remove: true,
-        browsers: ['last 2 versions'],
-      },
-      discardComments: { removeAll: true },
-      discardUnused: false,
-      mergeIdents: false,
-      reduceIdents: false,
-      safe: true,
-      sourcemap: true,
-    },
-    modules: true,
-    importLoaders: 1,
-    localIdentName: '[name]__[local]___[hash:base64:5]',
-  },
-};
-
-const config = {
-  mode: process.env.NODE_ENV,
-  devtool: 'sourcemap',
-  optimization: {
-    minimize: process.env.NODE_ENV === 'production',
-  },
+module.exports = {
   entry: {
-    Sortly: [`${__dirname}/src/index`],
-    app: [`${__dirname}/docs/app/index`],
-  },
-  output: {
-    path: `${__dirname}/dist`,
-    filename: '[name].js',
-    publicPath: '/',
+    docs: './docs',
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
+        test: /\.tsx?$/,
         exclude: /node_modules/,
+        loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
-        use: [styleLoader, cssLoader, postcssLoader],
-      },
-      {
-        test: /\.scss$/,
-        use: [styleLoader, cssLoader, postcssLoader, sassLoader],
-      },
-    ],
+        test: /\.(gif|png|jpg|jpeg|mp3)$/,
+        exclude: /node_modules/,
+        loader: 'file-loader'
+      }
+    ]
   },
   plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static', openAnalyzer: false, reportFilename: `${__dirname}/bundle-analyze.html`,
-    }),
+    new HtmlWebpackPlugin({
+      template: './docs/index.html',
+    })
   ],
   resolve: {
+    extensions: [
+      '.js',
+      '.ts',
+      '.tsx',
+      '.cjs',
+    ],
     alias: {
-      'react-sortly': path.resolve(__dirname, 'src/index'),
-    },
+      'react-sortly': path.resolve(__dirname, './src'),
+    }
   },
-};
-
-
-module.exports = config;
+}

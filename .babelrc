@@ -1,29 +1,16 @@
 {
   "presets": [
-    ["@babel/env", {
-      "debug": true,
-      "targets": {
-        "browsers": ["last 2 versions", "ie >= 11"]
-      },
+    ["@babel/preset-env", {
+      "debug": false,
       "useBuiltIns": "usage",
+      "corejs": "3.0.0",
       "modules": false
     }],
-    "@babel/react"
+    "@babel/preset-typescript",
+    "@babel/preset-react"
   ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-flow-strip-types"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        "@babel/transform-modules-commonjs"
-      ]
-    },
-    "production": {
-      "plugins": [
-        "@babel/transform-modules-commonjs"
-      ]
-    }
-  }
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-transform-runtime"
+  ]
 }
