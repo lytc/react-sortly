@@ -6,27 +6,17 @@ import { move, increaseIndent, decreaseIndent, findDescendants } from './utils';
 import ItemDataType from './types/ItemDataType';
 import Item, { ItemProps } from './Item';
 
-const stats = new global.Stats();
-stats.showPanel(0);
-stats.dom.style.opacity = 0.3;
-stats.dom.style.transition = 'opacity 0.5s';
-stats.dom.style.top = '10px';
-stats.dom.style.right = '10px';
-stats.dom.style.left = 'auto';
-document.body.appendChild(stats.dom);
-
 export type SortlyProps<D = ObjectLiteral> = {
   items: ItemDataType<D>[];
-  itemRenderer: ItemProps<D>['renderer'];
-  rendererProps: ObjectLiteral;
   threshold?: number;
   maxDepth?: number;
   horizontal?: boolean;
   onChange: (items: ItemDataType<D>[]) => void;
+  children: ItemProps<D>['children'];
 };
 
 function Sortly<D = ObjectLiteral>(props: SortlyProps<D>) {
-  const { items, itemRenderer, rendererProps, threshold = 20, maxDepth = Infinity, horizontal, onChange } = props;
+  const { items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange } = props;
   const [draggingId, setDraggingId] = React.useState<ID | null>(null);
   const handleDragBegin = React.useCallback((id: ID) => {
     setDraggingId(id);
@@ -37,7 +27,6 @@ function Sortly<D = ObjectLiteral>(props: SortlyProps<D>) {
   const [handleMove] = useDebouncedCallback((
     sourceId: ID, targetId: ID, pointerOffset: XYCoord, targetBoundingRect: ClientRect
   ) => {
-    stats.update();
     const sourceIndex = items.findIndex(({ id }) => id === sourceId);
     const targetIndex = items.findIndex(({ id }) => id === targetId);
     
@@ -90,19 +79,19 @@ function Sortly<D = ObjectLiteral>(props: SortlyProps<D>) {
   return (
     <>
       {items.map((data, index) => (
-        <Item 
+        <Item<D>
           key={data.id} 
           index={index}
           id={data.id}
           data={data}
-          renderer={itemRenderer}
-          rendererProps={rendererProps}
           onDragBegin={handleDragBegin}
           onDragEnd={handleDragEnd}
           onMove={handleMove}
           onIndent={handleIndent}
           isClosetDragging={draggingDescendants.includes(data)}
-        />
+        >
+          {children}
+        </Item>
       ))}
     </>
   );

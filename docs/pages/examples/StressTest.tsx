@@ -49,9 +49,10 @@ const StressTest = () => {
       >
         <Sortly<Item>
           items={items}
-          itemRenderer={DefaultItemRenderer}
           onChange={handleChange}
-        />
+        >
+          {(props) => <DefaultItemRenderer {...props} />}
+        </Sortly>
       </Flipper>
     </Box>
   );

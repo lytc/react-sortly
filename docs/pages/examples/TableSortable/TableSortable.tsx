@@ -33,9 +33,10 @@ const TableSortable = () => {
               <Sortly<{ name: string }>
                 maxDepth={0}
                 items={items}
-                itemRenderer={ItemRenderer}
                 onChange={handleChange}
-              />
+              >
+                {ItemRenderer}
+              </Sortly>
             </TableBody>
           </Table>
         </Flipper>

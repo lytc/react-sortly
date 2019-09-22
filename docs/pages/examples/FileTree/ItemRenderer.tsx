@@ -1,10 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Theme, IconButton, Box, InputBase } from '@material-ui/core';
+import { Theme, Box } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FileIcon from '@material-ui/icons/InsertDriveFile';
-import CloseIcon from '@material-ui/icons/Close';
 import { Flipped } from 'react-flip-toolkit';
 
 import { RendererProps } from '../../../../src';
@@ -14,11 +13,13 @@ type ItemRendererProps = RendererProps<{
   type: 'folder' | 'file';
   collapsed?: boolean;
 }> & {
-  onToggleCollapse: (id: number) => void;
+  onToggleCollapse: (id: ID) => void;
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: (props: ItemRendererProps) => ({
+    display: 'flex',
+    alignItems: 'center',
     fontSize: props.data.type === 'folder' ? 20 : 18,
     position: 'relative',
     cursor: 'move',
@@ -40,17 +41,17 @@ const ItemRenderer = React.memo((props: ItemRendererProps) => {
   
   drag(drop(preview(ref)));
 
-  const handleClick = React.useCallback(() => {
+  const handleClick = () => {
     if (type === 'file') {
       return;
     }
 
     onToggleCollapse(id);
-  }, [type]);
+  };
 
   return (
     <Flipped flipId={id}>
-      <Box ref={ref} className={classes.root} display="flex" alignItems="center">
+      <div ref={ref} className={classes.root}>
         <Box onClick={handleClick}>
           {type === 'folder' && !collapsed && <FolderOpenIcon />}
           {type === 'folder' && collapsed && <FolderIcon />}
@@ -59,7 +60,7 @@ const ItemRenderer = React.memo((props: ItemRendererProps) => {
         <Box display="flex" flex={1} px={1}>
           {name}
         </Box>
-      </Box>
+      </div>
     </Flipped>
   );
 });

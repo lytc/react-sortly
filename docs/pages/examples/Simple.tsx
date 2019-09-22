@@ -24,15 +24,13 @@ const Simple = () => {
 
   return (
     <Box width={400}>
-      <Flipper
-        flipKey={items.map(({ id }) => id).join('.')}
-      // staggerConfig={{ default: { speed: 0.5 } }}
-      >
-        <Sortly<{ name: string }>
+      <Flipper flipKey={items.map(({ id }) => id).join('.')}>
+        <Sortly<Item>
           items={items}
-          itemRenderer={DefaultItemRenderer}
           onChange={handleChange}
-        />
+        >
+          {DefaultItemRenderer}
+        </Sortly>
       </Flipper>
     </Box>
   );

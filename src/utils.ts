@@ -3,11 +3,18 @@ import memoizeOne from 'memoize-one';
 
 import ItemDataType from './types/ItemDataType';
 
+type Fn<TArgs extends unknown[], TResult> = (...args: TArgs) => TResult; // along with this.
+
+function memoize<TArgs extends unknown[], TResult>(fn: Fn<TArgs, TResult>): Fn<TArgs, TResult> {
+  return memoizeOne(fn);
+}
+
 const update = memoizeOne(u);
 
-export const findDescendants = memoizeOne((items: ItemDataType[], index: number) => {
+
+export const findDescendants = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   const item = items[index];
-  const descendants: ItemDataType[] = [];
+  const descendants: typeof items = [];
 
   for (let i = index + 1; i < items.length; i += 1) {
     const next = items[i];
@@ -22,7 +29,7 @@ export const findDescendants = memoizeOne((items: ItemDataType[], index: number)
   return descendants;
 });
 
-export const findDeepestDescendant = memoizeOne((items: ItemDataType[], index: number) => {
+export const findDeepestDescendant = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   const descendants = findDescendants(items, index);
 
   if (descendants.length === 0) {
@@ -35,7 +42,7 @@ export const findDeepestDescendant = memoizeOne((items: ItemDataType[], index: n
   );
 });
 
-export const findParent = memoizeOne((items: ItemDataType[], index: number) => {
+export const findParent = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   if (index === 0) {
     return null;
   }
@@ -52,7 +59,7 @@ export const findParent = memoizeOne((items: ItemDataType[], index: number) => {
   return null;
 });
 
-export const findPrevSibling = memoizeOne((items: ItemDataType[], index: number) => {
+export const findPrevSibling = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   const item = items[index];
 
   for (let i = index - 1; i >= 0; i -= 1) {
@@ -65,7 +72,7 @@ export const findPrevSibling = memoizeOne((items: ItemDataType[], index: number)
   return null;
 });
 
-export const isClosestOf = memoizeOne((items: ItemDataType[], index: number, descendantIndex: number) => {
+export const isClosestOf = memoize(<T extends ItemDataType>(items: T[], index: number, descendantIndex: number) => {
   if (index >= descendantIndex) {
     return false;
   }
@@ -73,7 +80,7 @@ export const isClosestOf = memoizeOne((items: ItemDataType[], index: number, des
   return findDescendants(items, index).includes(items[descendantIndex]);
 });
 
-export const isDescendantOf = memoizeOne((items: ItemDataType[], index: number, closestIndex: number) => {
+export const isDescendantOf = memoize(<T extends ItemDataType>(items: T[], index: number, closestIndex: number) => {
   if (index <= closestIndex) {
     return false;
   }
@@ -81,7 +88,7 @@ export const isDescendantOf = memoizeOne((items: ItemDataType[], index: number, 
   return findDescendants(items, closestIndex).includes(items[index]);
 });
 
-export const move = memoizeOne((items: ItemDataType[], sourceIndex: number, targetIndex: number) => {
+export const move = memoize(<T extends ItemDataType>(items: T[], sourceIndex: number, targetIndex: number) => {
   const sourceItem = items[sourceIndex];
   const targetItem = items[targetIndex];
   
@@ -113,8 +120,8 @@ export const move = memoizeOne((items: ItemDataType[], sourceIndex: number, targ
   return update(items, updateFn);
 });
 
-export const increaseIndent = memoizeOne((
-  items: ItemDataType[], index: number, maxDepth?: number
+export const increaseIndent = memoize(<T extends ItemDataType>(
+  items: T[], index: number, maxDepth?: number
 ) => {
   // Don't allow to increase if it's the first item
   if (index === 0) {
@@ -153,7 +160,7 @@ export const increaseIndent = memoizeOne((
   return update(items, updateFn);
 });
 
-export const decreaseIndent = memoizeOne((items: ItemDataType[], index: number) => {
+export const decreaseIndent = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   const item = items[index];
   
   if (item.depth === 0) {
@@ -175,11 +182,11 @@ export const decreaseIndent = memoizeOne((items: ItemDataType[], index: number) 
   return update(items, updateFn);
 });
 
-export const add = (items: ItemDataType[], item: Omit<ItemDataType, 'depth'>) => (
+export const add = <T extends ItemDataType>(items: T[], item: Omit<T, 'depth'>) => (
   update(items, { $push: [{ ...item, depth: 0 }] })
 );
 
-export const remove = (items: ItemDataType[], index: number) => {
+export const remove = <T extends ItemDataType>(items: T[], index: number) => {
   const descendants = findDescendants(items, index);
   return update(items, {
     $splice: [[index, descendants.length + 1]]

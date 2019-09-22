@@ -6,7 +6,8 @@ import {
 import ItemDataType from './types/ItemDataType';
 import useAnimationFrame from './useAnimationFrame';
 
-export type RendererProps<D = ObjectLiteral> = {
+export type ChildrenProps<D = ObjectLiteral> = {
+  index: number;
   id: ID;
   data: ItemDataType<D>;
   drag: DragElementWrapper<DragSourceOptions>;
@@ -20,18 +21,17 @@ export type ItemProps<D = ObjectLiteral> = {
   id: ID;
   index: number;
   data: ItemDataType<D>;
-  renderer: React.ComponentType<RendererProps<D>>;
   onDragBegin: (id: ID) => void;
   onDragEnd: (id: ID) => void;
   onMove: (sourceId: ID, targetId: ID, pointerOffset: XYCoord, hoverMiddleY: ClientRect) => void;
   onIndent: (sourceId: ID, movementX: number) => void;
   isClosetDragging: boolean;
-  rendererProps?: ObjectLiteral;
+  children: (props: ChildrenProps<D>) => React.ReactElement;
 };
 
 function Item<D = ObjectLiteral>(props: ItemProps<D>) {
   let dropRef: ConnectableElement = null;
-  const { id, data, renderer: Renderer, rendererProps, onDragBegin, onDragEnd, onMove, onIndent, isClosetDragging } = props;
+  const { index, id, data, children, onDragBegin, onDragEnd, onMove, onIndent, isClosetDragging } = props;
   const [{ isDragging }, drag, preview] = useDrag({
     item: { id, type: 'ITEM' },
     collect: (monitor) => ({
@@ -116,7 +116,7 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
 
   const [animate, cancel] = useAnimationFrame(detect);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (hovered) {
       animate();
     } else {
@@ -130,18 +130,16 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
     return result;
   };
 
-  return (
-    <Renderer
-      id={id}
-      data={data}
-      drag={drag}
-      preview={preview}
-      drop={drop}
-      isDragging={isDragging}
-      isClosetDragging={isClosetDragging}
-      {...rendererProps}
-    />
-  );
+  return children({
+    index,
+    id,
+    data,
+    drag,
+    preview,
+    drop,
+    isDragging,
+    isClosetDragging,
+  });
 }
 
-export default React.memo(Item);
+export default React.memo(Item) as typeof Item;

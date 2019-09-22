@@ -35,7 +35,7 @@ const FileTree = () => {
   const handleChange = (newItems: Item[]) => {
     setItems(newItems);
   };
-  const handleToggleCollapse = (id: number) => {
+  const handleToggleCollapse = (id: ID) => {
     const index = items.findIndex((item) => item.id === id);
     const item = items[index];
     const { collapsed } = item;
@@ -61,9 +61,10 @@ const FileTree = () => {
           >
             <Sortly<Item>
               items={items}
-              itemRenderer={(p) => <ItemRenderer {...p} onToggleCollapse={handleToggleCollapse} />}
               onChange={handleChange}
-            />
+            >
+              {(props) => <ItemRenderer {...props} onToggleCollapse={handleToggleCollapse} />}
+            </Sortly>
           </Flipper>
         </Box>
       </Paper>

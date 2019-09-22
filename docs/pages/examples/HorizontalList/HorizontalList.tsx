@@ -37,9 +37,10 @@ const HorizontalList = () => {
             maxDepth={0}
             horizontal
             items={items}
-            itemRenderer={ItemRenderer}
             onChange={handleChange}
-          />
+          >
+            {(props) => <ItemRenderer {...props} />}
+          </Sortly>
         </Box>
       </Flipper>
     </Box>

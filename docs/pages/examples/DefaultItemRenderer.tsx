@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }),
 }));
 
-const DefaultItemRenderer = React.memo((props: ItemRendererProps) => {
+const DefaultItemRenderer = (props: ItemRendererProps) => {
   const { data: { id, name }, drag, drop } = props;
   const ref = React.useRef< HTMLDivElement>(null);
   const classes = useStyles(props);
@@ -38,6 +38,6 @@ const DefaultItemRenderer = React.memo((props: ItemRendererProps) => {
       </div>
     </Flipped>
   );
-});
+};
 
 export default DefaultItemRenderer;

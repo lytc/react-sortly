@@ -45,12 +45,12 @@ const Advanced = () => {
       <Flipper
         flipKey={items.map(({ id }) => id).join('.')}
       >
-        <Sortly<{ name: string }>
+        <Sortly<Item>
           items={items}
-          itemRenderer={ItemRenderer}
-          rendererProps={{ onChangeName: handleChangeName, onDelete: handleDelete }}
           onChange={handleChange}
-        />
+        >
+          {(props) => <ItemRenderer {...props} onChangeName={handleChangeName} onDelete={handleDelete} />}
+        </Sortly>
       </Flipper>
       <Box mt={4}>
         <Button variant="outlined" onClick={handleClickAdd}>Add New Item</Button>

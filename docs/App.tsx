@@ -4,25 +4,15 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { 
-  CssBaseline, AppBar, Toolbar, SwipeableDrawer, List, ListSubheader, ListItem, ListItemText, Divider, Box
+  CssBaseline, AppBar, Toolbar, SwipeableDrawer, List, ListSubheader, ListItem, ListItemText, Box
 } from '@material-ui/core';
 import { HashRouter as Router, Route, Link as RouterLink } from 'react-router-dom';
 
 import routes from './routes';
-import ExamplePage from './pages/examples/ExamplePage';
 
 const theme = createMuiTheme({
 
 });
-
-const examples = [
-  { id: 'simple', label: 'Simple' },
-  { id: 'advanced', label: 'Advanced' },
-  { id: 'table-sortable-row', label: 'Table Sortable Row' },
-  { id: 'horizontal-list', label: 'Horizontal List' },
-  { id: 'file-tree', label: 'File Tree' },
-  { id: 'stress-test', label: 'Stress Test' },
-];
 
 const App = () => (
   <ThemeProvider theme={theme}>

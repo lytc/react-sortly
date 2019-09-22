@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Theme, IconButton, TableRow, TableCell } from '@material-ui/core';
+import { IconButton, TableRow, TableCell } from '@material-ui/core';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import { Flipped } from 'react-flip-toolkit';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }),
 });
 
-const ItemRenderer = React.memo((props: ItemRendererProps) => {
+const ItemRenderer = (props: ItemRendererProps) => {
   const { id, data: { name }, drag, drop, preview } = props;
   const dropRef = React.useRef<any>(null);
   const moveHandlerRef = React.useRef<HTMLButtonElement | null>(null);
@@ -37,6 +37,6 @@ const ItemRenderer = React.memo((props: ItemRendererProps) => {
       </TableRow>
     </Flipped>
   );
-});
+};
 
 export default ItemRenderer;
