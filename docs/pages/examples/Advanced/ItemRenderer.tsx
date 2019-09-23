@@ -6,43 +6,43 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Flipped } from 'react-flip-toolkit';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { RendererProps } from '../../../../src';
+import { ItemRendererProps } from '../../../../src';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: (props: ItemRendererProps) => ({
+  root: (props: ItemItemRendererProps) => ({
     position: 'relative',
     marginBottom: theme.spacing(1.5),
-    zIndex: props.isDragging || props.isClosetDragging ? 1 : 0,
+    zIndex: props.isDragging || props.isClosestDragging() ? 1 : 0,
   }),
-  body: (props: ItemRendererProps) => ({
+  body: (props: ItemItemRendererProps) => ({
     display: 'flex',
     background: '#fff',
     cursor: 'move',
     marginLeft: theme.spacing(props.data.depth * 2),
-    boxShadow: props.isDragging || props.isClosetDragging ? '0px 0px 8px #666' : '0px 0px 2px #666',
-    border: props.isDragging || props.isClosetDragging ? '1px dashed #1976d2' : '1px solid transparent',
+    boxShadow: props.isDragging || props.isClosestDragging() ? '0px 0px 8px #666' : '0px 0px 2px #666',
+    border: props.isDragging || props.isClosestDragging() ? '1px dashed #1976d2' : '1px solid transparent',
   })
 }));
 
-type ItemRendererProps = RendererProps<{
+type ItemItemRendererProps = ItemRendererProps<{
   name: string;
 }> & {
   onChangeName: (id: ID, name: string) => void;
   onDelete: (id: ID) => void;
 };
 
-const ItemRenderer = React.memo((props: ItemRendererProps) => {
+const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
   const { id, data: { name }, drag, drop, preview, onChangeName, onDelete } = props;
   const dropRef = React.useRef<any>(null);
   const moveHandlerRef = React.useRef<HTMLButtonElement | null>(null);
   const classes = useStyles(props);
   const [handleChangeName] = useDebouncedCallback(onChangeName, 500);
-  const handleChange = React.useCallback((e) => {
+  const handleChange = (e) => {
     handleChangeName(id, e.target.value);
-  }, []);
-  const handleClickDelete = React.useCallback(() => {
+  };
+  const handleClickDelete = () => {
     onDelete(id);
-  }, []);
+  };
 
   drag(moveHandlerRef);
   drop(preview(dropRef));

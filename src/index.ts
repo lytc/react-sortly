@@ -1,7 +1,9 @@
-import Sortly from './Sortly';
-import { ChildrenProps } from './Item';
 import ItemDataType from './types/ItemDataType';
+import DragObject from './types/DragObject';
+import ItemRendererProps from './types/ItemRendererProps';
+import ContextProvider from './ContextProvider';
+import Sortly from './Sortly';
 
 export default Sortly;
 export * from './utils';
-export { ItemDataType, ChildrenProps as RendererProps };
+export { ContextProvider, ItemDataType, DragObject, ItemRendererProps };

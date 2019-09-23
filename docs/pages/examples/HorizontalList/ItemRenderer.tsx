@@ -3,15 +3,15 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 import { Flipped } from 'react-flip-toolkit';
 
-import { RendererProps } from '../../../../src';
+import { ItemRendererProps } from '../../../../src';
 
-type ItemRendererProps = RendererProps<{
+type ItemItemRendererProps = ItemRendererProps<{
   name: string;
   color: string;
 }>;
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: (props: ItemRendererProps) => ({
+  root: (props: ItemItemRendererProps) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }),
 }));
 
-const ItemRenderer = React.memo((props: ItemRendererProps) => {
+const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
   const { id, data: { name }, drag, drop, preview } = props;
   const ref = React.useRef<any>(null);
   const classes = useStyles(props);

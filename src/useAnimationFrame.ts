@@ -11,20 +11,19 @@ document.body.appendChild(stats.dom);
 
 const useAnimationFrame = (callback: () => void) => {
   const requestRef = React.useRef<number>();
+  const cancel = () => {
+    if (requestRef.current) {
+      cancelAnimationFrame(requestRef.current);
+      requestRef.current = undefined;
+    }
+  };
   const animate = () => {
     callback();
     stats.update();
     requestRef.current = requestAnimationFrame(animate);
   };
 
-  const cancel = () => {
-    if (requestRef.current) {
-      cancelAnimationFrame(requestRef.current);
-    }
-  };
-
   React.useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
     return () => {
       cancel();
     };

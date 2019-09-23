@@ -6,6 +6,7 @@ import TableSortable from './pages/examples/TableSortable/TableSortable';
 import HorizontalList from './pages/examples/HorizontalList/HorizontalList';
 import StressTest from './pages/examples/StressTest';
 import FileTree from './pages/examples/FileTree/FileTree';
+import MultipleTree from './pages/examples/MultipleTree';
 
 export default [
   {
@@ -25,7 +26,8 @@ export default [
       { id: 'table-sortable-row', label: 'Table Sortable Row', component: TableSortable },
       { id: 'horizontal-list', label: 'Horizontal List', component: HorizontalList },
       { id: 'file-tree', label: 'File Tree', component: FileTree },
-      { id: 'stress-test', label: 'Stress Test', component: StressTest }
+      { id: 'two-trees', label: 'Two Trees', component: MultipleTree },
+      { id: 'stress-test', label: 'Stress Test', component: StressTest },
     ]
   }
 ];

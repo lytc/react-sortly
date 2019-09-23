@@ -23,22 +23,22 @@ const Advanced = () => {
   const handleChange = (newItems: Item[]) => {
     setItems(newItems);
   };
-  const handleChangeName = React.useCallback((id: ID, name: string) => {
+  const handleChangeName = (id: ID, name: string) => {
     const index = items.findIndex((item) => item.id === id);
     setItems(update(items, {
       [index]: { name: { $set: name } }
     }));
-  }, [items]);
-  const handleDelete = React.useCallback((id: ID) => {
+  };
+  const handleDelete = (id: ID) => {
     const index = items.findIndex((item) => item.id === id);
     setItems(remove(items, index));
-  }, [items]);
-  const handleClickAdd = React.useCallback(() => {
+  };
+  const handleClickAdd = () => {
     setItems(add(items, {
       id: Date.now(),
       name: faker.name.findName(),
     }));
-  }, [items]);
+  };
 
   return (
     <Box width={600}>

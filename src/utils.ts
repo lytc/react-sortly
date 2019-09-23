@@ -59,6 +59,19 @@ export const findParent = memoize(<T extends ItemDataType>(items: T[], index: nu
   return null;
 });
 
+export const findNextSibling = memoize(<T extends ItemDataType>(items: T[], index: number) => {
+  const item = items[index];
+
+  for (let i = index + 1; i < items.length; i += 1) {
+    const prev = items[i];
+    if (prev.depth === item.depth) {
+      return prev;
+    }
+  }
+
+  return null;
+});
+
 export const findPrevSibling = memoize(<T extends ItemDataType>(items: T[], index: number) => {
   const item = items[index];
 
@@ -70,6 +83,16 @@ export const findPrevSibling = memoize(<T extends ItemDataType>(items: T[], inde
   }
 
   return null;
+});
+
+export const isNextSibling = memoize(<T extends ItemDataType>(items: T[], index: number, siblingIndex: number) => {
+  const nextSibling = findNextSibling(items, index);
+  return nextSibling !== null && items.indexOf(nextSibling) === siblingIndex;
+});
+
+export const isPrevSibling = memoize(<T extends ItemDataType>(items: T[], index: number, siblingIndex: number) => {
+  const prevSibling = findPrevSibling(items, index);
+  return prevSibling !== null && items.indexOf(prevSibling) === siblingIndex;
 });
 
 export const isClosestOf = memoize(<T extends ItemDataType>(items: T[], index: number, descendantIndex: number) => {
@@ -182,12 +205,23 @@ export const decreaseIndent = memoize(<T extends ItemDataType>(items: T[], index
   return update(items, updateFn);
 });
 
-export const add = <T extends ItemDataType>(items: T[], item: Omit<T, 'depth'>) => (
-  update(items, { $push: [{ ...item, depth: 0 }] })
-);
+type NewItem<T extends ItemDataType> = Omit<T, 'depth'> & { depth?: number };
+export const add = <T extends ItemDataType>(items: T[], data: NewItem<T> | NewItem<T>[]) => {
+  let newItems = (Array.isArray(data) ? data : [data]) // eslint-disable-line no-param-reassign
+    .map((item) => ({ ...item, depth: item.depth || 0 })) as T[];
+  const first = newItems[0];
+  const reduceDepth = first.depth;
+  
+  if (reduceDepth > 0) {
+    newItems = newItems.map((item) => ({ ...item, depth: item.depth - reduceDepth }));
+  }
+  
+  return update(items, { $push: data });
+};
 
 export const remove = <T extends ItemDataType>(items: T[], index: number) => {
   const descendants = findDescendants(items, index);
+
   return update(items, {
     $splice: [[index, descendants.length + 1]]
   });

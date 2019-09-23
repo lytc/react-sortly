@@ -6,9 +6,9 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FileIcon from '@material-ui/icons/InsertDriveFile';
 import { Flipped } from 'react-flip-toolkit';
 
-import { RendererProps } from '../../../../src';
+import { ItemRendererProps } from '../../../../src';
 
-type ItemRendererProps = RendererProps<{
+type ItemItemRendererProps = ItemRendererProps<{
   name: string;
   type: 'folder' | 'file';
   collapsed?: boolean;
@@ -17,7 +17,7 @@ type ItemRendererProps = RendererProps<{
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: (props: ItemRendererProps) => ({
+  root: (props: ItemItemRendererProps) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: props.data.type === 'folder' ? 20 : 18,
@@ -26,15 +26,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: props.data.collapsed && props.data.type === 'file' ? 0 : theme.spacing(0.5, 0),
     margin: theme.spacing(0.5),
     marginLeft: theme.spacing(props.data.depth * 2),
-    color: props.isDragging || props.isClosetDragging ? theme.palette.primary.dark : 'inherit',
-    zIndex: props.isDragging || props.isClosetDragging ? 1 : 0,
+    color: props.isDragging || props.isClosestDragging() ? theme.palette.primary.dark : 'inherit',
+    zIndex: props.isDragging || props.isClosestDragging() ? 1 : 0,
     fontWeight: props.data.type === 'folder' ? 600 : 500,
     height: props.data.collapsed && props.data.type === 'file' ? 0 : 'auto',
     overflow: 'hidden',
   }),
 }));
 
-const ItemRenderer = React.memo((props: ItemRendererProps) => {
+const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
   const { id, data: { type, collapsed, name }, drag, drop, preview, onToggleCollapse } = props;
   const ref = React.useRef<any>(null);
   const classes = useStyles(props);
