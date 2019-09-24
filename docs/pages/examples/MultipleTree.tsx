@@ -5,10 +5,10 @@ import faker from 'faker/locale/en';
 import update from 'immutability-helper';
 import { useDrop } from 'react-dnd';
 
-import Sortly, { ItemDataType, DragObject, add, remove, findDescendants } from '../../../src';
+import Sortly, { ItemData, DragObject, add, remove, findDescendants } from '../../../src';
 import DefaultItemRenderer from './DefaultItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   categoryId: number;
   name: string;
 }>;
@@ -38,13 +38,12 @@ type TreeProps = {
   id: number;
   items: Item[]; 
   onChange: (items: Item[]) => void;
-  onEnter: (item: DragObject<Item>) => void;
+  onEnter: (item: DragObject) => void;
 };
-const Tree = ({ id, items, onChange, onEnter }: TreeProps) => {
+const Tree = ({ items, onChange, onEnter }: TreeProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [{ hovered, dragItem }, drop] = useDrop({
     accept: 'TREE',
-    canDrop: (item: DragObject<Item>) => item.data.categoryId !== id,
     collect: (monitor) => ({
       hovered: monitor.isOver(),
       dragItem: monitor.getItem(),
@@ -89,7 +88,7 @@ const MultipleTree = () => {
       [index]: { items: { $set: newItems } },
     }));
   };
-  const handleEnter = (targetCategoryIndex: number) => (dragItem: DragObject<Item>) => {
+  const handleEnter = (targetCategoryIndex: number) => (dragItem: DragObject) => {
     const sourceCategoryIndex = categories.findIndex((category) => (
       category.items.some((item) => item.id === dragItem.id)
     ));

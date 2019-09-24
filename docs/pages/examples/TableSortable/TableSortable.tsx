@@ -2,10 +2,10 @@ import React from 'react';
 import { Flipper } from 'react-flip-toolkit';
 import { Box, Table, TableBody, Paper } from '@material-ui/core';
 
-import Sortly, { ItemDataType } from '../../../../src';
+import Sortly, { ItemData } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
 }>;
 const ITEMS: Item[] = [
@@ -30,7 +30,7 @@ const TableSortable = () => {
         >
           <Table size="small">
             <TableBody>
-              <Sortly<{ name: string }>
+              <Sortly<Item>
                 maxDepth={0}
                 items={items}
                 onChange={handleChange}

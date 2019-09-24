@@ -1,0 +1,15 @@
+{
+  "mode": "file",
+  "out": "tdocs",
+  "excludePrivate": true,
+  "exclude": [
+    "**/index.ts",
+    "**/context.ts",
+    "**/useAnimationFrame.ts",
+    "**/Item.tsx",
+    "**/types/Context.ts",
+    "**/types/HoverRef.ts",
+    "**/types/ObjectLiteral.ts",
+    "**/types/Optional.ts"
+  ]
+}

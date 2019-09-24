@@ -26,7 +26,7 @@ export default [
       { id: 'table-sortable-row', label: 'Table Sortable Row', component: TableSortable },
       { id: 'horizontal-list', label: 'Horizontal List', component: HorizontalList },
       { id: 'file-tree', label: 'File Tree', component: FileTree },
-      { id: 'two-trees', label: 'Two Trees', component: MultipleTree },
+      { id: 'multiple-tree', label: 'Multile Tree', component: MultipleTree },
       { id: 'stress-test', label: 'Stress Test', component: StressTest },
     ]
   }

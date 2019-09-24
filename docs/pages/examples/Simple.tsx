@@ -2,10 +2,10 @@ import React from 'react';
 import { Flipper } from 'react-flip-toolkit';
 import { Box } from '@material-ui/core';
 
-import Sortly, { ItemDataType } from '../../../src';
+import Sortly, { ItemData } from '../../../src';
 import DefaultItemRenderer from './DefaultItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
 }>;
 const ITEMS: Item[] = [

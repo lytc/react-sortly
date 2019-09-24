@@ -1,7 +1,9 @@
 import React from 'react';
 import { useDrag, useDrop, ConnectableElement, DragObjectWithType } from 'react-dnd';
 
-import ItemDataType from './types/ItemDataType';
+import ID from './types/ID';
+import ObjectLiteral from './types/ObjectLiteral';
+import ItemData from './types/ItemData';
 import HoverRef from './types/HoverRef';
 import ItemRendererProps from './types/ItemRendererProps';
 import context from './context';
@@ -10,7 +12,7 @@ export type ItemProps<D = ObjectLiteral> = {
   type: DragObjectWithType['type'] | (() => DragObjectWithType['type']);
   id: ID;
   index: number;
-  data: ItemDataType<D>;
+  data: ItemData<D>;
   isClosestDragging: () => boolean;
   children: (props: ItemRendererProps<D>) => React.ReactElement;
   onHoverBegin: (id: ID, ref: HoverRef) => void;
@@ -58,6 +60,7 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
 
   const drop = (ref: ConnectableElement) => {
     const result = dndDrop(ref);
+    // @ts-ignore
     dropRef.current = result;
     return result;
   };

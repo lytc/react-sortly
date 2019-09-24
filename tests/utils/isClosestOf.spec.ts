@@ -1,8 +1,8 @@
-import ItemDataType from '../../src/types/ItemDataType';
+import ItemData from '../../src/types/ItemData';
 import { isClosestOf } from '../../src/utils';
 
 describe('isClosestOf', () => {
-  const dataProviders: [ItemDataType[], number, number, boolean][] = [
+  const dataProviders: [ItemData[], number, number, boolean][] = [
     [
       [{ id: 1, depth: 0 }, { id: 2, depth: 0 }, { id: 3, depth: 0 }],
       1,

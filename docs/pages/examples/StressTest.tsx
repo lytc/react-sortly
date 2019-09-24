@@ -4,10 +4,10 @@ import { Box, Input } from '@material-ui/core';
 import { name, internet } from 'faker/locale/en';
 import { useDebouncedCallback } from 'use-debounce';
 
-import Sortly, { ItemDataType } from '../../../src';
+import Sortly, { ItemData } from '../../../src';
 import DefaultItemRenderer from './DefaultItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
 }>;
 const generate = (numItems: number): Item[] => (

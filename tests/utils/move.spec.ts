@@ -1,8 +1,8 @@
-import ItemDataType from '../../src/types/ItemDataType';
+import ItemData from '../../src/types/ItemData';
 import { move } from '../../src/utils';
 
 describe('move', () => {
-  const dataProviders: [ItemDataType[], number, number, ItemDataType[]][] = [
+  const dataProviders: [ItemData[], number, number, ItemData[]][] = [
     [
       [{ id: 1, depth: 0 }, { id: 2, depth: 0 }],
       0,

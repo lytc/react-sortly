@@ -1,8 +1,8 @@
-import ItemDataType from '../../src/types/ItemDataType';
+import ItemData from '../../src/types/ItemData';
 import { findPrevSibling } from '../../src/utils';
 
 describe('findPrevSibling', () => {
-  const dataProviders: [ItemDataType[], number, ItemDataType | null][] = [
+  const dataProviders: [ItemData[], number, ItemData | null][] = [
     [
       [{ id: 1, depth: 0 }, { id: 2, depth: 0 }, { id: 3, depth: 0 }],
       0,

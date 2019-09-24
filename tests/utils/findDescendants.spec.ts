@@ -1,8 +1,8 @@
-import ItemDataType from '../../src/types/ItemDataType';
+import ItemData from '../../src/types/ItemData';
 import { findDescendants } from '../../src/utils';
 
 describe('findDescendants', () => {
-  const dataProviders: [ItemDataType[], number, ItemDataType[]][] = [
+  const dataProviders: [ItemData[], number, ItemData[]][] = [
     [
       [{ id: 1, depth: 0 }, { id: 2, depth: 0 }, { id: 3, depth: 0 }],
       1,

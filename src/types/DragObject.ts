@@ -1,7 +1,7 @@
 import { DragObjectWithType } from 'react-dnd';
 
-import ItemDataType from './ItemDataType';
+import ID from './ID';
 
-type DragObject<D extends ItemDataType> = DragObjectWithType & { id: ID; data: D };
+type DragObject = DragObjectWithType & { id: ID };
 
 export default DragObject; // eslint-disable-line no-undef

@@ -3,35 +3,46 @@ import { DragSourceMonitor } from 'react-dnd';
 import update from 'immutability-helper';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { move, increaseIndent, decreaseIndent, isClosestOf, isNextSibling, isPrevSibling } from './utils';
-import ItemDataType from './types/ItemDataType';
+import ID from './types/ID';
+import ObjectLiteral from './types/ObjectLiteral';
+import ItemData from './types/ItemData';
 import DragObject from './types/DragObject';
 import HoverRef from './types/HoverRef';
+import { move, indent, outdent, isClosestOf, isNextSibling, isPrevSibling } from './utils';
 import Item, { ItemProps } from './Item';
 import useAnimationFrame from './useAnimationFrame';
 import context from './context';
 
 export type SortlyProps<D = ObjectLiteral> = {
   type?: ItemProps<D>['type'];
-  items: ItemDataType<D>[];
+  items: ItemData<D>[];
   threshold?: number;
   maxDepth?: number;
   horizontal?: boolean;
-  onChange: (items: ItemDataType<D>[]) => void;
+  onChange: (items: ItemData<D>[]) => void;
   children: ItemProps<D>['children'];
 };
 
+/**
+ * @hidden
+ */
 type DndData = { 
   dragMonitor?: DragSourceMonitor; 
   hoverId?: ID; 
   hoverRef?: HoverRef;
 };
 
+/**
+ * @hidden
+ */
 const isRef = (obj: any) => (
   // eslint-disable-next-line no-prototype-builtins
   obj !== null && typeof obj === 'object' && obj.hasOwnProperty('current')
 );
 
+/**
+ * @hidden
+ */
 const getElConnectableElement = (hoverRef: HoverRef) => {
   if (!hoverRef.current) {
     return null;
@@ -44,7 +55,10 @@ const getElConnectableElement = (hoverRef: HoverRef) => {
   return el;
 };
 
-const detectMove = <T extends ItemDataType>(
+/**
+ * @hidden
+ */
+const detectMove = <T extends ItemData>(
   items: T[],
   dragMonitor: DragSourceMonitor,
   dragId: ID, 
@@ -91,7 +105,10 @@ const detectMove = <T extends ItemDataType>(
   return move(items, sourceIndex, targetIndex);
 };
 
-const detectIndent = <T extends ItemDataType>(
+/**
+ * @hidden
+ */
+const detectIndent = <T extends ItemData>(
   items: T[], 
   dragMonitor: DragSourceMonitor, 
   dragId: ID,
@@ -122,9 +139,12 @@ const detectIndent = <T extends ItemDataType>(
     return items;
   }
 
-  return movementX > 0 ? increaseIndent(items, index, maxDepth) : decreaseIndent(items, index);
+  return movementX > 0 ? indent(items, index, maxDepth) : outdent(items, index);
 };
 
+/**
+ * @hidden
+ */
 const typeSeq = (() => {
   let seq = 0;
   return () => {
@@ -133,7 +153,7 @@ const typeSeq = (() => {
   };
 })();
 
-function Sortly<D extends ItemDataType>(props: SortlyProps<D>) {
+function Sortly<D extends ItemData>(props: SortlyProps<D>) {
   const { 
     type = typeSeq(), items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange 
   } = props;
@@ -145,7 +165,7 @@ function Sortly<D extends ItemDataType>(props: SortlyProps<D>) {
       return;
     }
 
-    const dragItem: DragObject<ItemDataType<D>> = dragMonitor.getItem();
+    const dragItem: DragObject = dragMonitor.getItem();
 
     if (!dragItem) {
       return;
@@ -194,7 +214,7 @@ function Sortly<D extends ItemDataType>(props: SortlyProps<D>) {
       return false;
     }
 
-    const dragData: DragObject<D> = dragMonitor.getItem();
+    const dragData: DragObject = dragMonitor.getItem();
 
     if (!dragData) {
       return false;

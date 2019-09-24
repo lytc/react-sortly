@@ -37,7 +37,7 @@ const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
   const moveHandlerRef = React.useRef<HTMLButtonElement | null>(null);
   const classes = useStyles(props);
   const [handleChangeName] = useDebouncedCallback(onChangeName, 500);
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     handleChangeName(id, e.target.value);
   };
   const handleClickDelete = () => {

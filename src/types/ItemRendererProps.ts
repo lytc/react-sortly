@@ -1,10 +1,13 @@
 import { DragElementWrapper, DragSourceOptions, DragPreviewOptions } from 'react-dnd';
-import ItemDataType from './ItemDataType';
+
+import ID from './ID';
+import ObjectLiteral from './ObjectLiteral';
+import ItemData from './ItemData';
 
 type ItemRendererProps<D = ObjectLiteral> = {
   index: number;
   id: ID;
-  data: ItemDataType<D>;
+  data: ItemData<D>;
   drag: DragElementWrapper<DragSourceOptions>;
   preview: DragElementWrapper<DragPreviewOptions>;
   drop: DragElementWrapper<any>;

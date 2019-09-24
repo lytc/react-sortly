@@ -3,10 +3,10 @@ import { Flipper } from 'react-flip-toolkit';
 import { Box } from '@material-ui/core';
 import { name, internet } from 'faker/locale/en';
 
-import Sortly, { ItemDataType } from '../../../../src';
+import Sortly, { ItemData } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
   color: string;
 }>;

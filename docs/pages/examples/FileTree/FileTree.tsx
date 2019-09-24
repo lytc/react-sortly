@@ -4,10 +4,10 @@ import { Box, Paper } from '@material-ui/core';
 import { random, system } from 'faker/locale/en';
 import update from 'immutability-helper';
 
-import Sortly, { ItemDataType, findDescendants } from '../../../../src';
+import Sortly, { ItemData, findDescendants } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
   type: 'folder' | 'file';
   collapsed?: boolean;

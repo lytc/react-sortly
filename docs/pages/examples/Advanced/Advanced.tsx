@@ -4,10 +4,10 @@ import { Box, Button } from '@material-ui/core';
 import update from 'immutability-helper';
 import faker from 'faker/locale/en';
 
-import Sortly, { ItemDataType, add, remove } from '../../../../src';
+import Sortly, { ItemData, add, remove } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemDataType<{
+type Item = ItemData<{
   name: string;
 }>;
 const ITEMS: Item[] = [

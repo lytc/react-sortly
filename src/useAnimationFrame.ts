@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-ignore
 const stats = new global.Stats();
 stats.showPanel(0);
 stats.dom.style.opacity = 0.3;
@@ -23,11 +24,7 @@ const useAnimationFrame = (callback: () => void) => {
     requestRef.current = requestAnimationFrame(animate);
   };
 
-  React.useEffect(() => {
-    return () => {
-      cancel();
-    };
-  }, []);
+  React.useEffect(() => cancel, []);
 
   return [animate, cancel];
 };
