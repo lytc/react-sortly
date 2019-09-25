@@ -1,7 +1,7 @@
 import ItemData from '../../src/types/ItemData';
-import { increaseIndent } from '../../src/utils';
+import { indent } from '../../src/utils';
 
-describe('increaseIndent', () => {
+describe('indent', () => {
   const dataProviders: [ItemData[], number, ItemData[]][] = [
     [
       [{ id: 1, depth: 0 }, { id: 2, depth: 0 }, { id: 3, depth: 0 }],
@@ -13,7 +13,7 @@ describe('increaseIndent', () => {
   dataProviders.forEach((data, i) => {
     test(`with dataset #${i}`, () => {
       const [items, index, expected] = data;
-      expect(increaseIndent(items, index, 1)).toEqual(expected);
+      expect(indent(items, index, 1)).toEqual(expected);
     });
   });
 });

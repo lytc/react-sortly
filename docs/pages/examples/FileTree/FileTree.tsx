@@ -4,7 +4,7 @@ import { Box, Paper } from '@material-ui/core';
 import { random, system } from 'faker/locale/en';
 import update from 'immutability-helper';
 
-import Sortly, { ItemData, findDescendants } from '../../../../src';
+import Sortly, { ID, ItemData, findDescendants } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
 type Item = ItemData<{

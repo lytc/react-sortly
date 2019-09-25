@@ -1,3 +1,4 @@
+import ID from './types/ID';
 import ItemData from './types/ItemData';
 import DragObject from './types/DragObject';
 import ItemRendererProps from './types/ItemRendererProps';
@@ -6,4 +7,10 @@ import Sortly from './Sortly';
 
 export default Sortly;
 export * from './utils';
-export { ContextProvider, ItemData, DragObject, ItemRendererProps };
+export {
+  ID,
+  ItemData, 
+  DragObject, 
+  ContextProvider,
+  ItemRendererProps 
+};

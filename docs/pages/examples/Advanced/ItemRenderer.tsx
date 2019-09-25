@@ -6,7 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Flipped } from 'react-flip-toolkit';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { ItemRendererProps } from '../../../../src';
+import { ID, ItemRendererProps } from '../../../../src';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: (props: ItemItemRendererProps) => ({

@@ -6,7 +6,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FileIcon from '@material-ui/icons/InsertDriveFile';
 import { Flipped } from 'react-flip-toolkit';
 
-import { ItemRendererProps } from '../../../../src';
+import { ID, ItemRendererProps } from '../../../../src';
 
 type ItemItemRendererProps = ItemRendererProps<{
   name: string;

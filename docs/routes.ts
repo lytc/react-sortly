@@ -1,5 +1,4 @@
 import Component from './pages/api/Component';
-import Helpers from './pages/api/Helpers';
 import Simple from './pages/examples/Simple';
 import Advanced from './pages/examples/Advanced/Advanced';
 import TableSortable from './pages/examples/TableSortable/TableSortable';

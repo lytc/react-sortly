@@ -4,7 +4,7 @@ import { Box, Button } from '@material-ui/core';
 import update from 'immutability-helper';
 import faker from 'faker/locale/en';
 
-import Sortly, { ItemData, add, remove } from '../../../../src';
+import Sortly, { ID, ItemData, add, remove } from '../../../../src';
 import ItemRenderer from './ItemRenderer';
 
 type Item = ItemData<{

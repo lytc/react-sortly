@@ -9,7 +9,7 @@ import {
   ListItem, ListItemText, Box, Typography, Divider, IconButton,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { HashRouter as Router, Switch, Route, Link as RouterLink } from 'react-router-dom';
+import { HashRouter as Router, Route, Link as RouterLink } from 'react-router-dom';
 
 import { ContextProvider } from '../src';
 import routes from './routes';
