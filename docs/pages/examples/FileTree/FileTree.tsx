@@ -53,7 +53,7 @@ const FileTree = () => {
   };
 
   return (
-    <Box>
+    <Box width={{ md: 600 }}>
       <Paper>
         <Box p={2}>
           <Flipper

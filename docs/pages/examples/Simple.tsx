@@ -23,7 +23,7 @@ const Simple = () => {
   };
 
   return (
-    <Box width={400}>
+    <Box width={{ md: 600 }}>
       <Flipper flipKey={items.map(({ id }) => id).join('.')}>
         <Sortly<Item>
           items={items}

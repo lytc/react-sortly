@@ -1,6 +1,6 @@
 {
   "mode": "file",
-  "out": "tdocs",
+  "out": "docs/api",
   "excludePrivate": true,
   "exclude": [
     "**/index.ts",

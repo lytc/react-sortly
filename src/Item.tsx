@@ -21,6 +21,7 @@ export type ItemProps<D = ObjectLiteral> = {
 
 function Item<D = ObjectLiteral>(props: ItemProps<D>) {
   const { setDragMonitor } = React.useContext(context);
+  const wasHoveredRef = React.useRef(false);
   const dropRef = React.useRef<React.RefObject<Element | undefined> | Element>();
   const { 
     type, index, id, data, children, onHoverEnd, onHoverBegin, isClosestDragging 
@@ -45,15 +46,16 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
   });
   const [{ hovered }, dndDrop] = useDrop({
     accept: t,
-    collect: React.useCallback((monitor) => ({
-      hovered: monitor.isOver(),
-    }), []),
+    collect: (monitor) => ({
+      hovered: monitor.isOver({ shallow: true }),
+    }),
   });
 
   React.useEffect(() => {
     if (hovered) {
       onHoverBegin(id, dropRef);
-    } else {
+      wasHoveredRef.current = true;
+    } else if (wasHoveredRef.current === true) {
       onHoverEnd(id);
     }
   }, [hovered]);

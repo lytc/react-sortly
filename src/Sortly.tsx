@@ -83,7 +83,6 @@ const detectMove = <T extends ItemData>(
   if (!horizontal) {
     const hoverMiddleY = (targetBoundingRect.bottom - targetBoundingRect.top) / 2;
     const hoverClientY = pointerOffset.y - targetBoundingRect.top;
-    // Dragging downwards
     if (
       (hoverClientY < hoverMiddleY && isNextSibling(items, sourceIndex, targetIndex)) // Dragging downwards
       || (hoverClientY > hoverMiddleY && isPrevSibling(items, sourceIndex, targetIndex)) // Dragging upwards
@@ -95,8 +94,8 @@ const detectMove = <T extends ItemData>(
     const hoverClientX = pointerOffset.x - targetBoundingRect.left;
 
     if (
-      (sourceIndex < targetIndex && hoverClientX < hoverMiddleX) // Dragging forwards
-      || (sourceIndex > targetIndex && hoverClientX > hoverMiddleX) // Dragging backwards
+      (hoverClientX < hoverMiddleX && isNextSibling(items, sourceIndex, targetIndex)) // Dragging forwards
+      || (hoverClientX > hoverMiddleX && isPrevSibling(items, sourceIndex, targetIndex)) // Dragging backwards
     ) {
       return items;
     }
@@ -119,7 +118,7 @@ const detectIndent = <T extends ItemData>(
   if (maxDepth === 0) {
     return items;
   }
-  
+
   const sourceOffset = dragMonitor.getSourceClientOffset();
   const targetBoundingRect = dropEl.getBoundingClientRect();
 
@@ -193,8 +192,10 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
     dndData.current = update(dndData.current, { hoverId: { $set: id }, hoverRef: { $set: hoverRef } });
   }, [items]);
 
-  const handleHoverEnd = React.useCallback(() => {
-    // dndData.current = update(dndData.current, { hoverId: { $set: undefined }, hoverRef: { $set: undefined } });
+  const handleHoverEnd = React.useCallback((id: ID) => {
+    if (dndData.current.hoverId === id) {
+      dndData.current = update(dndData.current, { hoverId: { $set: undefined }, hoverRef: { $set: undefined } });
+    }
   }, [items]);
 
   React.useEffect(() => {

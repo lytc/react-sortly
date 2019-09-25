@@ -7,6 +7,7 @@ import { useDrop } from 'react-dnd';
 
 import Sortly, { ItemData, DragObject, add, remove, findDescendants } from '../../../src';
 import DefaultItemRenderer from './DefaultItemRenderer';
+import useScreenSize from '../../hooks/useScreenSize';
 
 type Item = ItemData<{
   categoryId: number;
@@ -82,6 +83,7 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
 };
 
 const MultipleTree = () => {
+  const { isLargeScreen } = useScreenSize();
   const [categories, setCategories] = React.useState(CATEGORIES);
   const handleChange = (index: number) => (newItems: Item[]) => {
     setCategories(update(categories, {
@@ -116,9 +118,14 @@ const MultipleTree = () => {
 
   return (
     <Flipper flipKey={categories.map(({ items }) => items.map(({ id }) => id).join('.')).join('.')}>
-      <Box display="flex">
+      <Box display={{ md: 'flex' }}>
         {categories.map(({ id, name, items }, index) => (
-          <Box width={`${100 / categories.length}%`} pr={4} key={id}>
+          <Box 
+            key={id}
+            width={isLargeScreen ? `${100 / categories.length}%` : undefined} 
+            pr={{ md: index < categories.length - 1 ? 4 : 0 }}
+            mb={4}
+          >
             <Typography variant="h5" gutterBottom>{name}</Typography>
             <Tree
               id={id}

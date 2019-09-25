@@ -41,7 +41,7 @@ const Advanced = () => {
   };
 
   return (
-    <Box width={600}>
+    <Box width={{ md: 600 }}>
       <Flipper
         flipKey={items.map(({ id }) => id).join('.')}
       >

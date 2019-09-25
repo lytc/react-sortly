@@ -11,7 +11,8 @@
     "test": "$(npm bin)/jest --config ./jest.config.js --verbose",
     "lint": "$(npm bin)/eslint --ext .ts,.tsx src tests",
     "tsc": "$(npm bin)/tsc",
-    "lint:staged": "$(npm bin)/lint-staged"
+    "lint:staged": "$(npm bin)/lint-staged",
+    "gen-api-doc": "$(npm bin)/typedoc src/"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

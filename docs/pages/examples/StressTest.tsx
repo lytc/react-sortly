@@ -35,11 +35,12 @@ const StressTest = () => {
   }, 500);
 
   return (
-    <Box width={400}>
+    <Box width={{ md: 600 }}>
       <Input 
         type="number"
         fullWidth
         defaultValue={100}
+        endAdornment={<span>items</span>}
         onChange={(e) => { handleChangeNumItems(e.target.value); }}
       />
       <br />

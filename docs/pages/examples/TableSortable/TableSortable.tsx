@@ -23,7 +23,7 @@ const TableSortable = () => {
   };
 
   return (
-    <Box width={600}>
+    <Box width={{ md: 600 }}>
       <Paper>
         <Flipper
           flipKey={items.map(({ id }) => id).join('.')}

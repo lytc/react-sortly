@@ -13,8 +13,7 @@ export default [
     id: 'api',
     label: 'API',
     children: [
-      { id: 'component', label: 'Component', component: Component },
-      { id: 'helpers', label: 'Helpers', component: Helpers }
+      { id: 'api', label: 'API Documentation', component: Component },
     ]
   },
   {
