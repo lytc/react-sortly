@@ -70,7 +70,7 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
   drop(ref);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{ paddingBottom: 50 }}>
       <Sortly<Item>
         type="TREE"
         items={items}

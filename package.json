@@ -63,6 +63,7 @@
     "immutability-helper": "^3.0.1",
     "memoize-one": "^5.1.1",
     "react-dnd-html5-backend": "^9.3.4",
+    "react-dnd-touch-backend": "^9.4.0",
     "react-flip-toolkit": "^7.0.5",
     "react-perf-devtool": "^3.1.8",
     "react-router-dom": "^5.0.1",

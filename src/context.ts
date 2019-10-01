@@ -2,9 +2,17 @@ import React from 'react';
 
 import Context from './types/Context';
 
-// @ts-ignore
+const warn = () => {
+  console.warn('Please wrap with Provider');
+};
+
 const context = React.createContext<Context>({
-  setDragMonitor: () => {},
+  setDragMonitor: () => {
+    warn();
+  },
+  setConnectedDragSource: () => {
+    warn();
+  },
 });
 
 export default context;

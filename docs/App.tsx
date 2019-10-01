@@ -1,6 +1,7 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/indigo';
@@ -12,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { HashRouter as Router, Route, Link as RouterLink } from 'react-router-dom';
 
 import { ContextProvider } from '../src';
+import isTouchDevice from './isTouchDevice';
 import routes from './routes';
 import useScreenSize from './hooks/useScreenSize';
 import Dashboard from './pages/Dashboard';
@@ -22,6 +24,8 @@ const theme = createMuiTheme({
   },
 });
 
+const dndBackend = isTouchDevice() ? TouchBackend : HTML5Backend;
+
 const App = () => {
   const { isLargeScreen } = useScreenSize();
   const [open, setOpen] = React.useState(false);
@@ -29,7 +33,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={dndBackend}>
         <ContextProvider>
           <Router>
             <Box display="flex" pt={8} minHeight="100vh">

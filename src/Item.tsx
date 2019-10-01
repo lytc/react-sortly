@@ -4,9 +4,9 @@ import { useDrag, useDrop, ConnectableElement, DragObjectWithType } from 'react-
 import ID from './types/ID';
 import ObjectLiteral from './types/ObjectLiteral';
 import ItemData from './types/ItemData';
-import HoverRef from './types/HoverRef';
 import ItemRendererProps from './types/ItemRendererProps';
 import context from './context';
+import Connectable from './types/Connectable';
 
 export type ItemProps<D = ObjectLiteral> = {
   type: DragObjectWithType['type'] | (() => DragObjectWithType['type']);
@@ -15,19 +15,20 @@ export type ItemProps<D = ObjectLiteral> = {
   data: ItemData<D>;
   isClosestDragging: () => boolean;
   children: (props: ItemRendererProps<D>) => React.ReactElement;
-  onHoverBegin: (id: ID, ref: HoverRef) => void;
+  onHoverBegin: (id: ID, connectedDrop?: React.MutableRefObject<Connectable | undefined>) => void;
   onHoverEnd: (id: ID) => void;
 };
 
 function Item<D = ObjectLiteral>(props: ItemProps<D>) {
-  const { setDragMonitor } = React.useContext(context);
+  const { setDragMonitor, setConnectedDragSource } = React.useContext(context);
   const wasHoveredRef = React.useRef(false);
-  const dropRef = React.useRef<React.RefObject<Element | undefined> | Element>();
+  const connectedDragRef = React.useRef<Connectable>();
+  const connectedDropRef = React.useRef<Connectable>();
   const { 
     type, index, id, data, children, onHoverEnd, onHoverBegin, isClosestDragging 
   } = props;
   const t = typeof type === 'function' ? type() : type;
-  const [{ isDragging }, drag, preview] = useDrag({
+  const [{ isDragging }, dndDrag, preview] = useDrag({
     item: { 
       id, 
       type: t,
@@ -39,6 +40,7 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
     isDragging: (monitor) => id === monitor.getItem().id,
     begin: (monitor) => {
       setDragMonitor(monitor);
+      setConnectedDragSource(connectedDragRef);
     },
     end: () => {
       setDragMonitor(undefined);
@@ -53,17 +55,24 @@ function Item<D = ObjectLiteral>(props: ItemProps<D>) {
 
   React.useEffect(() => {
     if (hovered) {
-      onHoverBegin(id, dropRef);
+      onHoverBegin(id, connectedDropRef);
       wasHoveredRef.current = true;
     } else if (wasHoveredRef.current === true) {
       onHoverEnd(id);
     }
   }, [hovered]);
 
-  const drop = (ref: ConnectableElement) => {
-    const result = dndDrop(ref);
+  const drag = (connectable: ConnectableElement) => {
+    const result = dndDrag(connectable);
     // @ts-ignore
-    dropRef.current = result;
+    connectedDragRef.current = result;
+    return result;
+  };
+
+  const drop = (connectable: ConnectableElement) => {
+    const result = dndDrop(connectable);
+    // @ts-ignore
+    connectedDropRef.current = result;
     return result;
   };
 

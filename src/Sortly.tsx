@@ -7,11 +7,11 @@ import ID from './types/ID';
 import ObjectLiteral from './types/ObjectLiteral';
 import ItemData from './types/ItemData';
 import DragObject from './types/DragObject';
-import HoverRef from './types/HoverRef';
 import { move, indent, outdent, isClosestOf, isNextSibling, isPrevSibling } from './utils';
 import Item, { ItemProps } from './Item';
 import useAnimationFrame from './useAnimationFrame';
 import context from './context';
+import Connectable from './types/Connectable';
 
 export type SortlyProps<D = ObjectLiteral> = {
   type?: ItemProps<D>['type'];
@@ -27,9 +27,8 @@ export type SortlyProps<D = ObjectLiteral> = {
  * @hidden
  */
 type DndData = { 
-  dragMonitor?: DragSourceMonitor; 
-  hoverId?: ID; 
-  hoverRef?: HoverRef;
+  dropTargetId?: ID; 
+  connectedDropTarget?: React.RefObject<Connectable | undefined>;
 };
 
 /**
@@ -43,14 +42,19 @@ const isRef = (obj: any) => (
 /**
  * @hidden
  */
-const getElConnectableElement = (hoverRef: HoverRef) => {
-  if (!hoverRef.current) {
+const getElConnectableElement = (connectedDropTarget?: React.RefObject<Connectable | undefined>) => {
+  if (!connectedDropTarget) {
     return null;
   }
+
+  const { current } = connectedDropTarget;
   
-  const { current } = hoverRef;
+  if (!current) {
+    return null;
+  }
+
   const el = isRef(current) 
-    ? (current as React.RefObject<Element>).current : (current as Element);
+    ? ((current as React.RefObject<Element>).current) : (current as Element);
   
   return el;
 };
@@ -156,11 +160,11 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
   const { 
     type = typeSeq(), items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange 
   } = props;
-  const { dragMonitor } = React.useContext(context);
+  const { dragMonitor, connectedDragSource } = React.useContext(context);
   const dndData = React.useRef<DndData>({});
   const [requestAnim, cancelAnim] = useAnimationFrame(useDebouncedCallback(() => {
-    const { hoverId, hoverRef } = dndData.current;
-    if (!dragMonitor || !hoverId || !hoverRef) {
+    const { dropTargetId, connectedDropTarget } = dndData.current;
+    if (!dragMonitor) {
       return;
     }
 
@@ -170,31 +174,39 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
       return;
     }
 
-    const dropElement = getElConnectableElement(hoverRef);
-    if (!dropElement) {
-      return;
-    }
-
     const { id: dragId } = dragItem;
     let newItems;
-    if (dragId === hoverId) {
-      newItems = detectIndent(items, dragMonitor, dragId, dropElement, threshold, maxDepth);
-    } else {
-      newItems = detectMove(items, dragMonitor, dragId, hoverId, dropElement, horizontal);
+
+    if (!dropTargetId || dragId === dropTargetId) {
+      const el = getElConnectableElement(connectedDropTarget) || getElConnectableElement(connectedDragSource);
+      if (el) {
+        newItems = detectIndent(items, dragMonitor, dragId, el, threshold, maxDepth);
+      }
+    } else if (connectedDropTarget) {
+      const dropElement = getElConnectableElement(connectedDropTarget);
+      if (dropElement) {
+        newItems = detectMove(items, dragMonitor, dragId, dropTargetId, dropElement, horizontal);
+      }
     }
 
-    if (newItems !== items) {
+    if (newItems && newItems !== items) {
       onChange(newItems);
     }
   }, 10)[0]);
 
-  const handleHoverBegin = React.useCallback((id: ID, hoverRef: HoverRef) => {
-    dndData.current = update(dndData.current, { hoverId: { $set: id }, hoverRef: { $set: hoverRef } });
-  }, [items]);
+  const handleHoverBegin = React.useCallback(
+    (id: ID, connectedDropTarget?: React.MutableRefObject<Connectable | undefined>) => {
+      dndData.current = update(dndData.current, { 
+        dropTargetId: { $set: id }, connectedDropTarget: { $set: connectedDropTarget } 
+      });
+    }, [items]
+  );
 
   const handleHoverEnd = React.useCallback((id: ID) => {
-    if (dndData.current.hoverId === id) {
-      dndData.current = update(dndData.current, { hoverId: { $set: undefined }, hoverRef: { $set: undefined } });
+    if (dndData.current.dropTargetId === id) {
+      dndData.current = update(dndData.current, { 
+        dropTargetId: { $set: undefined }, connectedDropTarget: { $set: undefined }
+      });
     }
   }, [items]);
 
