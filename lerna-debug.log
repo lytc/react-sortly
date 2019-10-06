@@ -1,0 +1,5 @@
+43 error Error: Command failed: git tag v2.0.1 -m v2.0.1
+43 error fatal: tag 'v2.0.1' already exists
+43 error
+43 error     at makeError (/Users/lytc/.config/yarn/global/node_modules/execa/index.js:174:9)
+43 error     at /Users/lytc/.config/yarn/global/node_modules/execa/index.js:278:16
