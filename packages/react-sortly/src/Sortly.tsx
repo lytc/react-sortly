@@ -143,7 +143,7 @@ const detectIndent = <T extends ItemData>(
   }
 
   const depth = initialDepth + Math.round(movementX / threshold);
-
+  
   return updateDepth(items, index, depth, maxDepth);
 };
 
@@ -181,7 +181,7 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
 
     if (!dropTargetId || dragId === dropTargetId) {
       const el = getElConnectableElement(connectedDropTarget) || getElConnectableElement(connectedDragSource);
-      if (initialDepth && el) {
+      if (initialDepth !== undefined && el) {
         newItems = detectIndent(items, dragMonitor, dragId, el, threshold, initialDepth, maxDepth);
       }
     } else if (connectedDropTarget) {

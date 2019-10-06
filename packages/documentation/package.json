@@ -1,6 +1,6 @@
 {
   "name": "react-sortly-documentation",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0-beta2",
   "private": true,
   "description": "react-sortly Documentation",
   "repository": "git@github.com:lytc/react-sortly.git",
@@ -24,7 +24,7 @@
     "react-dnd-touch-backend": "^9.4.0",
     "react-flip-toolkit": "^7.0.6",
     "react-router-dom": "^5.1.2",
-    "react-sortly": "2.0.0-beta1",
+    "react-sortly": "2.0.0-beta2",
     "typedoc": "^0.15.0",
     "use-debounce": "^3.0.1",
     "webpack-dev-middleware": "^3.7.2",
