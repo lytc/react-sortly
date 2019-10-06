@@ -1,0 +1,63 @@
+{
+ "env": {
+   "browser": true,
+   "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["airbnb", "plugin:@typescript-eslint/recommended"],
+ "globals": {
+   "Atomics": "readonly",
+   "SharedArrayBuffer": "readonly",
+   "FileManager": "readonly",
+   "APP_VERSION": "readonly"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+ "parserOptions": {
+   "ecmaFeatures": {
+     "jsx": true
+    },
+   "ecmaVersion": 2018,
+   "sourceType": "module"
+  },
+ "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
+ "rules": {
+    "max-len": ["error", { "code": 120, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
+    "no-confusing-arrow": 0,
+    "object-curly-newline": 0,
+    "no-trailing-spaces": 0,
+    "comma-dangle": ["error", "only-multiline"],
+    "import/no-extraneous-dependencies": 0,
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+    "react/jsx-one-expression-per-line": 0,
+    "react/no-danger": 0,
+    "react/jsx-props-no-spreading": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/prefer-interface": 0,
+    "semi": "off",
+    "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "hrefLeft", "hrefRight" ],
+      "aspects": [ "noHref", "invalidHref", "preferButton" ]
+    }]
+  }
+}
