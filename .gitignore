@@ -1,6 +1,3 @@
 node_modules/
 .DS_Store
-.idea
-dist
-bundle-analyze.html
-coverage
+react-sortly.code-workspace

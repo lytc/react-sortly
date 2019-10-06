@@ -1,9 +1,0 @@
-{
-  "extends": "../.eslintrc.json",
-  "env": {
-    "jest": true
-  },
-  "rules": {
-    "@typescript-eslint/no-object-literal-type-assertion": 0
-  }
-}

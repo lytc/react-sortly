@@ -67,79 +67,67 @@
 				<a href="#a-hrefhttpslytcgithubioreact-sortlyreact-sortlya" id="a-hrefhttpslytcgithubioreact-sortlyreact-sortlya" style="color: inherit; text-decoration: none;">
 					<h1><a href="https://lytc.github.io/react-sortly">React Sortly</a></h1>
 				</a>
-				<p>Simple, lightweight and highly customizable dnd nested sortable React component.</p>
+				<p>Simple, lightweight and highly customizable dnd nested sortable React component based on <a href="https://github.com/react-dnd/react-dnd">React DnD</a></p>
 				<p>Supported to sort the tree, vertical list, horizontal list, table row and maybe more!</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
 				<pre><code class="language-bash">npm install --save react-sortly react-dnd react-dnd-html5-backend</code></pre>
-				<a href="#what39s-it-look-like" id="what39s-it-look-like" style="color: inherit; text-decoration: none;">
-					<h2>What&#39;s It Look Like?</h2>
+				<p>Demo: <a href="https://lytc.github.io/react-sortly">https://lytc.github.io/react-sortly</a></p>
+				<p>API Documentation: <a href="https://lytc.github.io/react-sortly/api">https://lytc.github.io/react-sortly/api</a></p>
+				<a href="#sample" id="sample" style="color: inherit; text-decoration: none;">
+					<h2>Sample</h2>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { DragDropContext } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dnd'</span>;
+<span class="hljs-keyword">import</span> { DndProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dnd'</span>;
 <span class="hljs-keyword">import</span> HTML5Backend <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dnd-html5-backend'</span>;
-<span class="hljs-keyword">import</span> Sortly <span class="hljs-keyword">from</span> <span class="hljs-string">'react-sortly'</span>;
+<span class="hljs-keyword">import</span> { ContextProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-sortly'</span>;
 
-<span class="hljs-keyword">const</span> ITEMS = [
-  { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Priscilla Cormier'</span>, <span class="hljs-attr">path</span>: [] },
-  { <span class="hljs-attr">id</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Miss Erich Bartoletti'</span>, <span class="hljs-attr">path</span>: [] },
-  { <span class="hljs-attr">id</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Alison Friesen'</span>, <span class="hljs-attr">path</span>: [<span class="hljs-number">2</span>] },
-  { <span class="hljs-attr">id</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Bernita Mayert'</span>, <span class="hljs-attr">path</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>] },
-  { <span class="hljs-attr">id</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Garfield Berge'</span>, <span class="hljs-attr">path</span>: [] },
-];
+<span class="hljs-keyword">const</span> DefaultItemRenderer = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> { <span class="hljs-attr">data</span>: { name, depth }, drag, drop } = props;
+  <span class="hljs-keyword">const</span> ref = React.useRef(<span class="hljs-literal">null</span>);
 
-<span class="hljs-keyword">const</span> itemStyle = {
-  <span class="hljs-attr">border</span>: <span class="hljs-string">'1px solid #ccc'</span>,
-  <span class="hljs-attr">cursor</span>: <span class="hljs-string">'move'</span>,
-  <span class="hljs-attr">padding</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">marginBottom</span>: <span class="hljs-number">4</span>,
+  drag(drop(ref));
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">marginLeft:</span> <span class="hljs-attr">depth</span> * <span class="hljs-attr">20</span> }}&gt;</span>
+      {name}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
 };
 
-<span class="hljs-keyword">const</span> muteStyle = { <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.3</span> };
-
-<span class="hljs-keyword">const</span> ItemRenderer = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> {
-    name, path, connectDragSource, connectDropTarget, 
-    isDragging, isClosestDragging,
-  } = props;
-  <span class="hljs-keyword">const</span> style = {
-    ...itemStyle,
-    ...(isDragging || isClosestDragging ? muteStyle : <span class="hljs-literal">null</span>),
-    <span class="hljs-attr">marginLeft</span>: path.length * <span class="hljs-number">30</span>,
+<span class="hljs-keyword">const</span> MySortableTree = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> [items, setItems] = React.useState([
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Priscilla Cormier'</span>, <span class="hljs-attr">depth</span>: <span class="hljs-number">0</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Miss Erich Bartoletti'</span>, <span class="hljs-attr">depth</span>: <span class="hljs-number">0</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Alison Friesen'</span>, <span class="hljs-attr">depth</span>: <span class="hljs-number">1</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Bernita Mayert'</span>, <span class="hljs-attr">depth</span>: <span class="hljs-number">2</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Garfield Berge'</span>, <span class="hljs-attr">depth</span>: <span class="hljs-number">0</span> },
+  ]);
+  <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function">(<span class="hljs-params">newItems</span>) =&gt;</span> {
+    setItems(newItems);
   };
-  <span class="hljs-keyword">const</span> el = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{style}</span>&gt;</span>{name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
-  <span class="hljs-keyword">return</span> connectDragSource(connectDropTarget(el));
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Sortly</span> <span class="hljs-attr">items</span>=<span class="hljs-string">{items}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{handleChange}</span>&gt;</span>
+      {(props) =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">ItemRenderer</span> {<span class="hljs-attr">...props</span>} /&gt;</span>}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Sortly</span>&gt;</span>
+  );
 };
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  state = { <span class="hljs-attr">items</span>: ITEMS }
-
-  handleChange = <span class="hljs-function">(<span class="hljs-params">items</span>) =&gt;</span> {
-    <span class="hljs-keyword">this</span>.setState({ items });
-  }
-
-  render() {
-    <span class="hljs-keyword">const</span> { items } = <span class="hljs-keyword">this</span>.state;
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">Sortly</span> 
-          <span class="hljs-attr">items</span>=<span class="hljs-string">{items}</span> 
-          <span class="hljs-attr">itemRenderer</span>=<span class="hljs-string">{ItemRenderer}</span>
-          <span class="hljs-attr">onChange</span>=<span class="hljs-string">{this.handleChange}</span>
-        /&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    );
-  }
-}
+const App = () = {
+ <span class="hljs-tag">&lt;<span class="hljs-name">DndProvider</span> <span class="hljs-attr">backend</span>=<span class="hljs-string">{HTML5Backend}</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">ContextProvider</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">MySortableTree</span> /&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">ContextProvider</span>&gt;</span>
+ <span class="hljs-tag">&lt;/<span class="hljs-name">DndProvider</span>&gt;</span>
+};
 
 ReactDOM.render(
-  DragDropContext(HTML5Backend)(MyApp),
+  <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>,
   document.getElementById('root')
 );</span></code></pre>
-				<hr>
-				<p><a href="https://lytc.github.io/react-sortly">https://lytc.github.io/react-sortly</a> For more examples!</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -152,6 +140,9 @@ ReactDOM.render(
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#connectable" class="tsd-kind-icon">Connectable</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-is-not-exported">
 						<a href="globals.html#contextproviderprops" class="tsd-kind-icon">Context<wbr>Provider<wbr>Props</a>
 					</li>
@@ -180,6 +171,12 @@ ReactDOM.render(
 						<a href="globals.html#add" class="tsd-kind-icon">add</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#buildtree" class="tsd-kind-icon">build<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#convert" class="tsd-kind-icon">convert</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
 						<a href="globals.html#finddeepestdescendant" class="tsd-kind-icon">find<wbr>Deepest<wbr>Descendant</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
@@ -195,7 +192,10 @@ ReactDOM.render(
 						<a href="globals.html#findprevsibling" class="tsd-kind-icon">find<wbr>Prev<wbr>Sibling</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
-						<a href="globals.html#indent" class="tsd-kind-icon">indent</a>
+						<a href="globals.html#flatten" class="tsd-kind-icon">flatten</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#getsiblings" class="tsd-kind-icon">get<wbr>Siblings</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
 						<a href="globals.html#isclosestof" class="tsd-kind-icon">is<wbr>Closest<wbr>Of</a>
@@ -213,10 +213,10 @@ ReactDOM.render(
 						<a href="globals.html#move" class="tsd-kind-icon">move</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
-						<a href="globals.html#outdent" class="tsd-kind-icon">outdent</a>
+						<a href="globals.html#remove" class="tsd-kind-icon">remove</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
-						<a href="globals.html#remove" class="tsd-kind-icon">remove</a>
+						<a href="globals.html#updatedepth" class="tsd-kind-icon">update<wbr>Depth</a>
 					</li>
 				</ul>
 			</nav>

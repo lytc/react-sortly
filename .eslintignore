@@ -1,0 +1,5 @@
+**/node_modules
+packages/react-sortly/lib
+packages/react-sortly/umd
+packages/react-sortly/cjs
+packages/documentation/build
