@@ -14,7 +14,7 @@
   "repository": "git@github.com:lytc/react-sortly.git",
   "author": "lytc <prtran@gmail.com>",
   "license": "MIT",
-  "main": "cjs/index.js",
+  "main": "lib/index.js",
   "files": [
     "lib/",
     "umd/",
