@@ -18,9 +18,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { ContextProvider } from 'react-sortly';
+import Sortly, { ContextProvider } from 'react-sortly';
 
-const DefaultItemRenderer = (props) => {
+const ItemRenderer = (props) => {
   const { data: { name, depth }, drag, drop } = props;
   const ref = React.useRef(null);
 
@@ -52,16 +52,14 @@ const MySortableTree = () => {
   );
 };
 
-const App = () = {
+const App = () => (
  <DndProvider backend={HTML5Backend}>
    <ContextProvider>
      <MySortableTree />
    </ContextProvider>
  </DndProvider>
-};
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
 );
+
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App />, rootElement);
 ```
