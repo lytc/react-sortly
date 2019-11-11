@@ -1,3 +1,7 @@
+## [2.0.4] 2019-11-11
+### Added
+- insert helper
+
 ## [1.5.5] 2018-12-25
 ### Fixed
 - onDragEnd typo
