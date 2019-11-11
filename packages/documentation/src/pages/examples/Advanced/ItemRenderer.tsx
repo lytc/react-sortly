@@ -26,13 +26,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type ItemItemRendererProps = ItemRendererProps<{
   name: string;
+  isNew?: boolean;
 }> & {
   onChangeName: (id: ID, name: string) => void;
   onDelete: (id: ID) => void;
+  onReturn: (id: ID) => void;
 };
 
 const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
-  const { id, data: { name }, drag, drop, preview, onChangeName, onDelete } = props;
+  const { id, data: { name, isNew }, drag, drop, preview, onChangeName, onDelete, onReturn } = props;
   const dropRef = React.useRef<any>(null);
   const moveHandlerRef = React.useRef<HTMLButtonElement | null>(null);
   const classes = useStyles(props);
@@ -42,6 +44,11 @@ const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
   };
   const handleClickDelete = () => {
     onDelete(id);
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onReturn(id);
+    }
   };
 
   drag(moveHandlerRef);
@@ -53,7 +60,13 @@ const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
         <div className={classes.body}>
           <IconButton ref={moveHandlerRef}><ReorderIcon /></IconButton>
           <Box display="flex" flex={1} px={1}>
-            <InputBase fullWidth defaultValue={name} onChange={handleChange} />
+            <InputBase
+              fullWidth
+              defaultValue={name}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              autoFocus={isNew}
+            />
           </Box>
           <IconButton onClick={handleClickDelete}><CloseIcon /></IconButton>
         </div>

@@ -227,6 +227,17 @@ const add = <T extends ItemData>(items: T[], data: Optional<T, 'depth'> | Option
   return update(items, { $push: newItems });
 };
 
+const insert = <T extends ItemData>(items: T[], data: Optional<T, 'depth'> | Optional<T, 'depth'>[], targetIndex: number) => {
+  const currentItemAtIndex = items[targetIndex];
+  const currentItemDescendants = findDescendants(items, targetIndex);
+  const { depth } = currentItemAtIndex;
+  const newItem = { ...data, depth };
+
+  return update(items, {
+    $splice: [[targetIndex + currentItemDescendants.length + 1, 0, newItem]]
+  });
+};
+
 const remove = <T extends ItemData>(items: T[], index: number) => {
   const descendants = findDescendants(items, index);
 
@@ -353,6 +364,7 @@ export {
   memoizedMove as move,
   memoizedUpdateDepth as updateDepth,
   add,
+  insert,
   remove,
   convert,
   buildTree,

@@ -1,6 +1,6 @@
 {
   "name": "react-sortly",
-  "version": "2.0.0-beta2",
+  "version": "2.0.4",
   "description": "React nested sortable component",
   "keywords": [
     "react", "nested", "sortable", "tree", "drag", "drop", "dnd"

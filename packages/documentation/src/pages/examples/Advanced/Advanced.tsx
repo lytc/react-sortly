@@ -4,11 +4,12 @@ import { Box, Button } from '@material-ui/core';
 import update from 'immutability-helper';
 import faker from 'faker/locale/en';
 
-import Sortly, { ID, ItemData, add, remove } from 'react-sortly/src';
+import Sortly, { ID, ItemData, add, remove, insert } from 'react-sortly/src';
 import ItemRenderer from './ItemRenderer';
 
 type Item = ItemData<{
   name: string;
+  isNew?: boolean;
 }>;
 const ITEMS: Item[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
@@ -37,7 +38,16 @@ const Advanced = () => {
     setItems(add(items, {
       id: Date.now(),
       name: faker.name.findName(),
+      isNew: true,
     }));
+  };
+  const handleReturn = (id: ID) => {
+    const index = items.findIndex((item) => item.id === id);
+    setItems(insert(items, {
+      id: Date.now(),
+      name: faker.name.findName(),
+      isNew: true,
+    }, index));
   };
 
   return (
@@ -49,7 +59,14 @@ const Advanced = () => {
           items={items}
           onChange={handleChange}
         >
-          {(props) => <ItemRenderer {...props} onChangeName={handleChangeName} onDelete={handleDelete} />}
+          {(props) => (
+            <ItemRenderer 
+              {...props} 
+              onChangeName={handleChangeName} 
+              onDelete={handleDelete} 
+              onReturn={handleReturn}
+            />
+          )}
         </Sortly>
       </Flipper>
       <Box mt={4}>
