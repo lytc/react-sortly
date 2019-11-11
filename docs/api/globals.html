@@ -94,6 +94,7 @@
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#findprevsibling" class="tsd-kind-icon">find<wbr>Prev<wbr>Sibling</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#flatten" class="tsd-kind-icon">flatten</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#getsiblings" class="tsd-kind-icon">get<wbr>Siblings</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#insert" class="tsd-kind-icon">insert</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#isclosestof" class="tsd-kind-icon">is<wbr>Closest<wbr>Of</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#isdescendantof" class="tsd-kind-icon">is<wbr>Descendant<wbr>Of</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-not-exported"><a href="globals.html#isnextsibling" class="tsd-kind-icon">is<wbr>Next<wbr>Sibling</a></li>
@@ -407,7 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils.ts:264</li>
+									<li>Defined in utils.ts:275</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -439,7 +440,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils.ts:238</li>
+									<li>Defined in utils.ts:249</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -646,7 +647,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils.ts:284</li>
+									<li>Defined in utils.ts:295</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -694,6 +695,41 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+					<a name="insert" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> insert</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">insert&lt;T&gt;<span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"depth"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"depth"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span>, targetIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in utils.ts:230</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="globals.html#itemdata" class="tsd-signature-type">ItemData</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>items: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"depth"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"depth"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>targetIndex: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -882,7 +918,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in utils.ts:230</li>
+									<li>Defined in utils.ts:241</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1010,6 +1046,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
 						<a href="globals.html#getsiblings" class="tsd-kind-icon">get<wbr>Siblings</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#insert" class="tsd-kind-icon">insert</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
 						<a href="globals.html#isclosestof" class="tsd-kind-icon">is<wbr>Closest<wbr>Of</a>
