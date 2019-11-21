@@ -246,7 +246,7 @@ const remove = <T extends ItemData>(items: T[], index: number) => {
   });
 };
 
-const convert = <T extends ObjectLiteral & { id: ID; parentId: null | ID; index: number }>(
+const convert = <T extends ObjectLiteral & { id: ID; parentId?: null | ID; index: number }>(
   items: T[],
   parentId?: null | ID,
   depth?: number,
@@ -292,7 +292,7 @@ const buildTree = <T extends ObjectLiteral>(
   return tree;
 };
 
-const flatten = <T extends ItemData>(items: T[]): (T & { parentId: ID; index: number })[] => (
+const flatten = <T extends ItemData>(items: T[]) => (
   items.map((item, index) => {
     const { depth, ...data } = item;
     const parent = findParent(items, index);
@@ -302,7 +302,7 @@ const flatten = <T extends ItemData>(items: T[]): (T & { parentId: ID; index: nu
       ...data,
       index: siblings.indexOf(item),
       parentId: parent ? parent.id : 0
-    } as (T & { parentId: ID; index: number });
+    };
   })
 );
 
