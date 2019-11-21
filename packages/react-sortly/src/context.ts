@@ -3,7 +3,7 @@ import React from 'react';
 import Context from './types/Context';
 
 const warn = () => {
-  console.warn('Please wrap with Provider'); // eslint-disable-line no-console
+  throw new Error('Expected react-sortly context');
 };
 
 const context = React.createContext<Context>({

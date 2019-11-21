@@ -6,21 +6,22 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Flipped } from 'react-flip-toolkit';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { ID, ItemRendererProps } from 'react-sortly/src';
+import { ID, ItemRendererProps, useDrag, useDrop, useIsClosestDragging } from 'react-sortly/src';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: (props: ItemItemRendererProps) => ({
+const useStyles = makeStyles<
+Theme, { muted: boolean; depth: number }>((theme: Theme) => ({
+  root: (props) => ({
     position: 'relative',
     marginBottom: theme.spacing(1.5),
-    zIndex: props.isDragging || props.isClosestDragging() ? 1 : 0,
+    zIndex: props.muted ? 1 : 0,
   }),
-  body: (props: ItemItemRendererProps) => ({
+  body: (props) => ({
     display: 'flex',
     background: '#fff',
     cursor: 'move',
-    marginLeft: theme.spacing(props.data.depth * 2),
-    boxShadow: props.isDragging || props.isClosestDragging() ? '0px 0px 8px #666' : '0px 0px 2px #666',
-    border: props.isDragging || props.isClosestDragging() ? '1px dashed #1976d2' : '1px solid transparent',
+    marginLeft: theme.spacing(props.depth * 2),
+    boxShadow: props.muted ? '0px 0px 8px #666' : '0px 0px 2px #666',
+    border: props.muted ? '1px dashed #1976d2' : '1px solid transparent',
   })
 }));
 
@@ -34,10 +35,7 @@ type ItemItemRendererProps = ItemRendererProps<{
 };
 
 const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
-  const { id, data: { name, isNew }, drag, drop, preview, onChangeName, onDelete, onReturn } = props;
-  const dropRef = React.useRef<any>(null);
-  const moveHandlerRef = React.useRef<HTMLButtonElement | null>(null);
-  const classes = useStyles(props);
+  const { id, depth, data: { name, isNew }, onChangeName, onDelete, onReturn } = props;
   const [handleChangeName] = useDebouncedCallback(onChangeName, 500);
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     handleChangeName(id, e.target.value);
@@ -50,15 +48,21 @@ const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
       onReturn(id);
     }
   };
+  const [{ isDragging }, drag, preview] = useDrag({
+    collect: (monitor) => ({ isDragging: monitor.isDragging() })
+  });
+  const [, drop] = useDrop();
 
-  drag(moveHandlerRef);
-  drop(preview(dropRef));
+  const classes = useStyles({
+    muted: useIsClosestDragging() || isDragging,
+    depth,
+  });
 
   return (
     <Flipped flipId={id}>
-      <div ref={dropRef} className={classes.root}>
+      <div ref={(ref) => drop(preview(ref))} className={classes.root}>
         <div className={classes.body}>
-          <IconButton ref={moveHandlerRef}><ReorderIcon /></IconButton>
+          <IconButton ref={drag}><ReorderIcon /></IconButton>
           <Box display="flex" flex={1} px={1}>
             <InputBase
               fullWidth

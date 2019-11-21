@@ -25,6 +25,7 @@ const config: webpack.Configuration = {
       }
     ]
   },
+  // @ts-ignore
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html'

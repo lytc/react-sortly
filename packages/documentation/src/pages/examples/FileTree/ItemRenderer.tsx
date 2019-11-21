@@ -6,7 +6,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FileIcon from '@material-ui/icons/InsertDriveFile';
 import { Flipped } from 'react-flip-toolkit';
 
-import { ID, ItemRendererProps } from 'react-sortly/src';
+import { ID, ItemRendererProps, useDrag, useDrop, useIsClosestDragging } from 'react-sortly/src';
 
 type ItemItemRendererProps = ItemRendererProps<{
   name: string;
@@ -16,8 +16,9 @@ type ItemItemRendererProps = ItemRendererProps<{
   onToggleCollapse: (id: ID) => void;
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: (props: ItemItemRendererProps) => ({
+const useStyles = makeStyles<
+Theme, ItemItemRendererProps & { muted: boolean }>((theme: Theme) => ({
+  root: (props) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: props.data.type === 'folder' ? 20 : 18,
@@ -25,9 +26,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'move',
     padding: props.data.collapsed && props.data.type === 'file' ? 0 : theme.spacing(0.5, 0),
     margin: theme.spacing(0.5),
-    marginLeft: theme.spacing(props.data.depth * 2),
-    color: props.isDragging || props.isClosestDragging() ? theme.palette.primary.dark : 'inherit',
-    zIndex: props.isDragging || props.isClosestDragging() ? 1 : 0,
+    marginLeft: theme.spacing(props.depth * 2),
+    color: props.muted ? theme.palette.primary.dark : 'inherit',
+    zIndex: props.muted ? 1 : 0,
     fontWeight: props.data.type === 'folder' ? 600 : 500,
     height: props.data.collapsed && props.data.type === 'file' ? 0 : 'auto',
     overflow: 'hidden',
@@ -35,11 +36,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
-  const { id, data: { type, collapsed, name }, drag, drop, preview, onToggleCollapse } = props;
-  const ref = React.useRef<any>(null);
-  const classes = useStyles(props);
-  
-  drag(drop(preview(ref)));
+  const { id, depth, data: { type, collapsed, name }, onToggleCollapse } = props;
+  const [{ isDragging }, drag] = useDrag({
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const [, drop] = useDrop();
 
   const handleClick = () => {
     if (type === 'file') {
@@ -49,9 +52,15 @@ const ItemRenderer = React.memo((props: ItemItemRendererProps) => {
     onToggleCollapse(id);
   };
 
+  const classes = useStyles({
+    ...props,
+    depth,
+    muted: useIsClosestDragging() || isDragging,
+  });
+
   return (
     <Flipped flipId={id}>
-      <div ref={ref} className={classes.root}>
+      <div ref={(ref) => drag(drop(ref))} className={classes.root}>
         <Box onClick={handleClick}>
           {type === 'folder' && !collapsed && <FolderOpenIcon />}
           {type === 'folder' && collapsed && <FolderIcon />}

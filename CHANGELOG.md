@@ -1,3 +1,7 @@
+## [Unreleased]
+### Changed
+- Use React hooks
+
 ## [2.0.4] 2019-11-11
 ### Added
 - insert helper

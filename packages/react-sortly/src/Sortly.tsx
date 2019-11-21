@@ -1,25 +1,26 @@
 import React from 'react';
-import { DragSourceMonitor } from 'react-dnd';
+import { DragSourceMonitor, DragObjectWithType } from 'react-dnd';
 import update from 'immutability-helper';
 import { useDebouncedCallback } from 'use-debounce';
 
 import ID from './types/ID';
-import ObjectLiteral from './types/ObjectLiteral';
 import ItemData from './types/ItemData';
 import DragObject from './types/DragObject';
-import { move, updateDepth, isClosestOf, isNextSibling, isPrevSibling } from './utils';
-import Item, { ItemProps } from './Item';
+import { move, updateDepth, isNextSibling, isPrevSibling } from './utils';
 import useAnimationFrame from './useAnimationFrame';
 import context from './context';
+import sortlyContext from './sortlyContext';
 import Connectable from './types/Connectable';
+import itemContext from './itemContext';
+import Item, { ItemProps } from './Item';
 
-export type SortlyProps<D = ObjectLiteral> = {
-  type?: ItemProps<D>['type'];
+export type SortlyProps<D extends ItemData> = {
+  type?: DragObjectWithType['type'] | (() => DragObjectWithType['type']);
   items: ItemData<D>[];
   threshold?: number;
   maxDepth?: number;
   horizontal?: boolean;
-  onChange: (items: ItemData<D>[]) => void;
+  onChange: (items: D[]) => void;
   children: ItemProps<D>['children'];
 };
 
@@ -224,44 +225,32 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
     };
   }, [dragMonitor]);
 
-  const isClosestDragging = React.useCallback((index: number) => () => {
-    if (!dragMonitor) {
-      return false;
-    }
-
-    const dragData: DragObject = dragMonitor.getItem();
-
-    if (!dragData) {
-      return false;
-    }
-
-    const dragIndex = items.findIndex(({ id }) => id === dragData.id);
-    
-    if (dragIndex === -1) {
-      return false;
-    }
-
-    return isClosestOf(items, dragIndex, index);
-  }, [items]);
-
   return (
-    <>
+    <sortlyContext.Provider value={{ items }}>
       {items.map((data, index) => (
-        <Item<D>
+        <itemContext.Provider 
           key={data.id} 
-          type={type}
-          index={index}
-          id={data.id}
-          depth={data.depth}
-          data={data}
-          onHoverBegin={handleHoverBegin}
-          onHoverEnd={handleHoverEnd}
-          isClosestDragging={isClosestDragging(index)}
+          value={{
+            index,
+            id: data.id, 
+            type, 
+            depth: data.depth,
+            data,
+            onHoverBegin: handleHoverBegin,
+            onHoverEnd: handleHoverEnd,
+          }}
         >
-          {children}
-        </Item>
+          <Item<D>
+            index={index}
+            id={data.id}
+            depth={data.depth}
+            data={data}
+          >
+            {children}
+          </Item>
+        </itemContext.Provider>
       ))}
-    </>
+    </sortlyContext.Provider>
   );
 }
 

@@ -7,7 +7,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/indigo';
 import { 
   CssBaseline, AppBar, Toolbar, SwipeableDrawer, List, ListSubheader, 
-  ListItem, ListItemText, Box, Typography, Divider, IconButton, Link,
+  ListItem, ListItemText, Box, Typography, Divider, IconButton,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { HashRouter as Router, Route, Link as RouterLink } from 'react-router-dom';

@@ -55,7 +55,7 @@ const Advanced = () => {
       <Flipper
         flipKey={items.map(({ id }) => id).join('.')}
       >
-        <Sortly<Item>
+        <Sortly
           items={items}
           onChange={handleChange}
         >

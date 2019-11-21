@@ -42,7 +42,6 @@ type TreeProps = {
   onEnter: (item: DragObject) => void;
 };
 const Tree = ({ items, onChange, onEnter }: TreeProps) => {
-  const ref = React.useRef<HTMLDivElement>(null);
   const [{ hovered, dragItem }, drop] = useDrop({
     accept: 'TREE',
     collect: (monitor) => ({
@@ -67,10 +66,8 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
     }
   }, [hovered]);
 
-  drop(ref);
-
   return (
-    <div ref={ref} style={{ paddingBottom: 50 }}>
+    <div ref={drop} style={{ paddingBottom: 50 }}>
       <Sortly<Item>
         type="TREE"
         items={items}
