@@ -1,9 +1,8 @@
 import ID from './ID';
-import ObjectLiteral from './ObjectLiteral';
 
-type ItemRendererProps<D extends ObjectLiteral> = {
+type ItemRendererProps<D = { id: ID }> = {
+  id: D extends { id: ID } ? D['id'] : ID;
   index: number;
-  id: ID;
   depth: number;
   data: D;
 };

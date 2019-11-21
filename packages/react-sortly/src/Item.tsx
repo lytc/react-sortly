@@ -1,18 +1,13 @@
 import React from 'react';
 
-import ID from './types/ID';
-import ItemData from './types/ItemData';
 import ItemRendererProps from './types/ItemRendererProps';
+import ID from './types/ID';
 
-export type ItemProps<D extends ItemData> = {
-  id: ID;
-  depth: number;
-  index: number;
-  data: ItemData<D>;
+export type ItemProps<D = { id: ID }> = ItemRendererProps<D> & {
   children: (props: ItemRendererProps<D>) => React.ReactElement;
 };
 
-function Item<D extends ItemData>(props: ItemProps<D>) {
+function Item<D = { id: ID }>(props: ItemProps<D>) {
   const { children, ...rest } = props;
   return children(rest);
 }
