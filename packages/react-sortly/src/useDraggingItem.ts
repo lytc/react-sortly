@@ -8,15 +8,17 @@ export default function useDraggingItem() {
   const { dragMonitor } = React.useContext(context);
   const items = useItems();
 
-  if (!dragMonitor) {
-    return null;
-  }
+  return React.useMemo(() => {
+    if (!dragMonitor) {
+      return null;
+    }
 
-  const dragData: { id: ID } = dragMonitor.getItem();
+    const dragData: { id: ID } = dragMonitor.getItem();
 
-  if (!dragData) {
-    return null;
-  }
+    if (!dragData) {
+      return null;
+    }
 
-  return items.find(({ id }) => id === dragData.id);
+    return items.find(({ id }) => id === dragData.id);
+  }, [dragMonitor, items]);
 }

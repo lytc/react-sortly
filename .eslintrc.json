@@ -31,7 +31,8 @@
   },
  "plugins": [
     "@typescript-eslint",
-    "react"
+    "react",
+    "react-hooks"
   ],
  "rules": {
     "max-len": ["error", { "code": 120, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
@@ -58,6 +59,8 @@
       "components": [ "Link" ],
       "specialLink": [ "hrefLeft", "hrefRight" ],
       "aspects": [ "noHref", "invalidHref", "preferButton" ]
-    }]
+    }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

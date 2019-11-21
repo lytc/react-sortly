@@ -18,10 +18,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type Item = ItemData<{
+type Item = {
   name: string;
-}>;
-const ITEMS: Omit<Item, 'index'>[] = [
+};
+const ITEMS: ItemData<Item>[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
   { id: 2, name: 'Miss Erich Bartoletti', depth: 0 },
   { id: 3, name: 'Alison Friesen', depth: 1 },
@@ -32,7 +32,7 @@ const ITEMS: Omit<Item, 'index'>[] = [
 const RevertOnDragOutside = () => {
   const [items, setItems] = React.useState(ITEMS);
   const [pause, setPause] = React.useState(false);
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     if (!pause) {
       setItems(newItems);
     }
@@ -53,7 +53,7 @@ const RevertOnDragOutside = () => {
     } else {
       setPause(false);
     }
-  }, [hovered]);
+  }, [hovered, didDrop]);
 
   const classes = useStyles();
   return (

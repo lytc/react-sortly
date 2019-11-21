@@ -7,10 +7,10 @@ import { useDebouncedCallback } from 'use-debounce';
 import Sortly, { ItemData } from 'react-sortly/src';
 import DefaultItemRenderer from './DefaultItemRenderer';
 
-type Item = ItemData<{
+type Item = {
   name: string;
-}>;
-const generate = (numItems: number): Item[] => (
+};
+const generate = (numItems: number): ItemData<Item>[] => (
   Array
     .from(Array(numItems).keys())
     .map((index) => ({
@@ -23,7 +23,7 @@ const generate = (numItems: number): Item[] => (
 
 const StressTest = () => {
   const [items, setItems] = React.useState(generate(100));
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
   const [handleChangeNumItems] = useDebouncedCallback((value: string) => {    

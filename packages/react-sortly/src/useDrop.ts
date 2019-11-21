@@ -30,7 +30,7 @@ export default function useDrop<DragObject extends DragObjectWithType, DropResul
     } else if (wasHoveredRef.current === true) {
       onHoverEnd(id);
     }
-  }, [collectedProps.hovered]);
+  }, [id, collectedProps.hovered, onHoverBegin, onHoverEnd]);
 
   const connectDropTarget = (...args: Parameters<typeof originalConnectDropTarget>) => {
     const result = originalConnectDropTarget(...args);

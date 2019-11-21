@@ -14,13 +14,13 @@ import Connectable from './types/Connectable';
 import itemContext from './itemContext';
 import Item, { ItemProps } from './Item';
 
-export type SortlyProps<D extends ItemData> = {
+export type SortlyProps<D = { id: ID }> = {
   type?: DragObjectWithType['type'] | (() => DragObjectWithType['type']);
   items: ItemData<D>[];
   threshold?: number;
   maxDepth?: number;
   horizontal?: boolean;
-  onChange: (items: D[]) => void;
+  onChange: (items: ItemData<D>[]) => void;
   children: ItemProps<D>['children'];
 };
 
@@ -159,7 +159,7 @@ const typeSeq = (() => {
   };
 })();
 
-function Sortly<D extends ItemData>(props: SortlyProps<D>) {
+function Sortly<D = { id: ID }>(props: SortlyProps<D>) {
   const { 
     type = typeSeq(), items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange 
   } = props;
@@ -202,7 +202,7 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
       dndData.current = update(dndData.current, { 
         dropTargetId: { $set: id }, connectedDropTarget: { $set: connectedDropTarget } 
       });
-    }, [items]
+    }, []
   );
 
   const handleHoverEnd = React.useCallback((id: ID) => {
@@ -211,7 +211,7 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
         dropTargetId: { $set: undefined }, connectedDropTarget: { $set: undefined }
       });
     }
-  }, [items]);
+  }, []);
 
   React.useEffect(() => {
     if (dragMonitor) {
@@ -223,7 +223,7 @@ function Sortly<D extends ItemData>(props: SortlyProps<D>) {
     return () => {
       cancelAnim();
     };
-  }, [dragMonitor]);
+  }, [dragMonitor, requestAnim, cancelAnim]);
 
   return (
     <sortlyContext.Provider value={{ items }}>

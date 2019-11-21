@@ -7,11 +7,11 @@ import faker from 'faker/locale/en';
 import Sortly, { ID, ItemData, add, remove, insert } from 'react-sortly/src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemData<{
+type Item = {
   name: string;
   isNew?: boolean;
-}>;
-const ITEMS: Item[] = [
+};
+const ITEMS: ItemData<Item>[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
   { id: 2, name: 'Miss Erich Bartoletti', depth: 0 },
   { id: 3, name: 'Alison Friesen', depth: 1 },
@@ -21,7 +21,7 @@ const ITEMS: Item[] = [
 
 const Advanced = () => {
   const [items, setItems] = React.useState(ITEMS);
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
   const handleChangeName = (id: ID, name: string) => {

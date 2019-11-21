@@ -5,10 +5,10 @@ import { Box, Table, TableBody, Paper } from '@material-ui/core';
 import Sortly, { ItemData } from 'react-sortly/src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemData<{
+type Item = {
   name: string;
-}>;
-const ITEMS: Item[] = [
+};
+const ITEMS: ItemData<Item>[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
   { id: 2, name: 'Miss Erich Bartoletti', depth: 0 },
   { id: 3, name: 'Alison Friesen', depth: 0 },
@@ -18,7 +18,7 @@ const ITEMS: Item[] = [
 
 const TableSortable = () => {
   const [items, setItems] = React.useState(ITEMS);
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
 
