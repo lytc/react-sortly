@@ -5,7 +5,7 @@ import itemContext from './itemContext';
 import Connectable from './types/Connectable';
 
 export default function useDrop<DragObject extends DragObjectWithType, DropResult, CollectedProps>(
-  spec?: DropTargetHookSpec<DragObject, DropResult, CollectedProps>,
+  spec?: Partial<DropTargetHookSpec<DragObject, DropResult, CollectedProps>>,
 ): [CollectedProps, ConnectDropTarget] {
   const connectedDropRef = React.useRef<Connectable>();
   const wasHoveredRef = React.useRef(false);
