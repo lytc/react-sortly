@@ -40,8 +40,8 @@ const DefaultItemRenderer = (props: ItemItemRendererProps) => {
 
   return (
     <Flipped flipId={id}>
-      <div ref={(ref) => drag(drop(ref))} className={classes.root}>
-        <div className={classes.body}>{name}</div>
+      <div ref={(ref) => drop(ref)} className={classes.root}>
+        <div ref={drag} className={classes.body}>{name}</div>
       </div>
     </Flipped>
   );

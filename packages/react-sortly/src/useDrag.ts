@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  useDrag as dndUseDrag, DragObjectWithType, DragSourceHookSpec, ConnectDragSource, ConnectDragPreview 
+  useDrag as dndUseDrag, DragObjectWithType, DragSourceHookSpec, ConnectDragSource, ConnectDragPreview, 
 } from 'react-dnd';
 
 import context from './context';
@@ -20,8 +20,16 @@ export default function useDrag<DragObject extends ObjectLiteral, DropResult, Co
     collectedProps,
     originalDonnectDragSource,
     connectDragPreview
-  ] = dndUseDrag<DragObjectWithType & { id: ID }, DropResult, CollectedProps>({
+  ] = dndUseDrag<DragObjectWithType & { id: ID }, DropResult, CollectedProps & { $isDragging: boolean }>({
     ...spec,
+    collect: (monitor) => {
+      const $isDragging = monitor.isDragging();
+      return {
+        ...(spec && spec.collect ? spec.collect(monitor) : undefined) as CollectedProps,
+        $isDragging,
+      };
+    },
+    isDragging: (monitor) => monitor.getItem().id === id,
     item: {
       type,
       ...(spec && spec.item ? spec.item : {}),
@@ -30,8 +38,6 @@ export default function useDrag<DragObject extends ObjectLiteral, DropResult, Co
     begin(monitor) {
       setInitialDepth(depth);
       setDragMonitor(monitor);
-      setConnectedDragSource(connectedDragRef);
-
       if (spec && spec.begin) {
         const result = spec.begin(monitor);
         if (typeof result === 'object') {
@@ -61,8 +67,17 @@ export default function useDrag<DragObject extends ObjectLiteral, DropResult, Co
     return result;
   };
 
+  const { $isDragging, ...rest } = collectedProps;
+
+  React.useEffect(() => {
+    if ($isDragging) {
+      setConnectedDragSource(connectedDragRef);
+    }
+  }, [$isDragging, setConnectedDragSource]);
+
   return [
-    collectedProps, 
+    // @ts-ignore
+    rest,
     connectDragSource, 
     connectDragPreview,
   ];

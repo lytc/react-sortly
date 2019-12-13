@@ -1,7 +1,6 @@
 import React from 'react';
 import { DragSourceMonitor, DragObjectWithType } from 'react-dnd';
 import update from 'immutability-helper';
-import { useDebouncedCallback } from 'use-debounce';
 
 import ID from './types/ID';
 import ItemData from './types/ItemData';
@@ -43,19 +42,19 @@ const isRef = (obj: any) => (
 /**
  * @hidden
  */
-const getElConnectableElement = (connectedDropTarget?: React.RefObject<Connectable | undefined>) => {
+const getElConnectableElement = (connectedDropTarget?: Connectable | React.RefObject<Connectable | undefined>) => {
   if (!connectedDropTarget) {
     return null;
   }
 
-  const { current } = connectedDropTarget;
+  const connectable = (connectedDropTarget as React.RefObject<Connectable | undefined>).current || connectedDropTarget;
   
-  if (!current) {
+  if (!connectable) {
     return null;
   }
 
-  const el = isRef(current) 
-    ? ((current as React.RefObject<Element>).current) : (current as Element);
+  const el = isRef(connectable) 
+    ? ((connectable as React.RefObject<Element>).current) : (connectable as Element);
   
   return el;
 };
@@ -116,7 +115,7 @@ const detectIndent = <T extends ItemData>(
   items: T[], 
   dragMonitor: DragSourceMonitor, 
   dragId: ID,
-  dropEl: Element,
+  dragEl: Element,
   threshold: number,
   initialDepth: number,
   maxDepth: number,
@@ -125,17 +124,18 @@ const detectIndent = <T extends ItemData>(
     return items;
   }
 
-  const sourceOffset = dragMonitor.getSourceClientOffset();
-  const targetBoundingRect = dropEl.getBoundingClientRect();
+  const sourceClientOffset = dragMonitor.getSourceClientOffset();
 
-  if (!sourceOffset) {
+  if (!sourceClientOffset) {
     return items;
   }
+  const boundingRect = dragEl.getBoundingClientRect();
 
-  const movementX = sourceOffset.x - targetBoundingRect.left;
+  const movementX = sourceClientOffset.x - boundingRect.left;
   if (Math.abs(movementX) < threshold) {
     return items;
   }
+
 
   const index = items.findIndex(({ id }) => id === dragId);
   
@@ -143,8 +143,8 @@ const detectIndent = <T extends ItemData>(
     return items;
   }
 
-  const depth = initialDepth + Math.round(movementX / threshold);
-  
+  const item = items[index];
+  const depth = item.depth + (movementX > 0 ? 1 : -1);
   return updateDepth(items, index, depth, maxDepth);
 };
 
@@ -161,11 +161,17 @@ const typeSeq = (() => {
 
 function Sortly<D = { id: ID }>(props: SortlyProps<D>) {
   const { 
-    type = typeSeq(), items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange 
+    type: typeFromProps, items, children, threshold = 20, maxDepth = Infinity, horizontal, onChange 
   } = props;
+  const [type, setType] = React.useState(typeFromProps || typeSeq());
+  React.useEffect(() => {
+    if (typeFromProps) {
+      setType(typeFromProps);
+    }
+  }, [typeFromProps]);
   const { dragMonitor, connectedDragSource, initialDepth } = React.useContext(context);
   const dndData = React.useRef<DndData>({});
-  const [requestAnim, cancelAnim] = useAnimationFrame(useDebouncedCallback(() => {
+  const [startAnim, stopAnim] = useAnimationFrame(React.useCallback(() => {
     const { dropTargetId, connectedDropTarget } = dndData.current;
     if (!dragMonitor) {
       return;
@@ -181,7 +187,7 @@ function Sortly<D = { id: ID }>(props: SortlyProps<D>) {
     let newItems;
 
     if (!dropTargetId || dragId === dropTargetId) {
-      const el = getElConnectableElement(connectedDropTarget) || getElConnectableElement(connectedDragSource);
+      const el = getElConnectableElement(connectedDragSource);
       if (initialDepth !== undefined && el) {
         newItems = detectIndent(items, dragMonitor, dragId, el, threshold, initialDepth, maxDepth);
       }
@@ -195,7 +201,7 @@ function Sortly<D = { id: ID }>(props: SortlyProps<D>) {
     if (newItems && newItems !== items) {
       onChange(newItems);
     }
-  }, 10)[0]);
+  }, [connectedDragSource, dragMonitor, horizontal, initialDepth, items, maxDepth, onChange, threshold]));
 
   const handleHoverBegin = React.useCallback(
     (id: ID, connectedDropTarget?: React.MutableRefObject<Connectable | undefined>) => {
@@ -215,15 +221,15 @@ function Sortly<D = { id: ID }>(props: SortlyProps<D>) {
 
   React.useEffect(() => {
     if (dragMonitor) {
-      requestAnim();
+      startAnim();
     } else {
-      cancelAnim();
+      stopAnim();
     }
 
     return () => {
-      cancelAnim();
+      stopAnim();
     };
-  }, [dragMonitor, requestAnim, cancelAnim]);
+  }, [dragMonitor, startAnim, stopAnim]);
 
   return (
     <sortlyContext.Provider value={{ items }}>

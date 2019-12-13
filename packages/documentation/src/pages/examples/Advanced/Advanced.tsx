@@ -14,9 +14,9 @@ type Item = {
 const ITEMS: ItemData<Item>[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
   { id: 2, name: 'Miss Erich Bartoletti', depth: 0 },
-  { id: 3, name: 'Alison Friesen', depth: 1 },
-  { id: 4, name: 'Bernita Mayert', depth: 2 },
-  { id: 5, name: 'Garfield Berge', depth: 0 },
+  // { id: 3, name: 'Alison Friesen', depth: 1 },
+  // { id: 4, name: 'Bernita Mayert', depth: 2 },
+  // { id: 5, name: 'Garfield Berge', depth: 0 },
 ];
 
 const Advanced = () => {
