@@ -1,4 +1,4 @@
-## [Unreleased]
+## [3.0.0-alpha.5] 2019-12-13
 ### Changed
 - Use React hooks
 
