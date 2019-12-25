@@ -6,11 +6,11 @@ import { name, internet } from 'faker/locale/en';
 import Sortly, { ItemData } from 'react-sortly/src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemData<{
+type Item = {
   name: string;
   color: string;
-}>;
-const generate = (numItems: number): Item[] => (
+};
+const generate = (numItems: number): ItemData<Item>[] => (
   Array
     .from(Array(numItems).keys())
     .map((index) => ({ 
@@ -23,7 +23,7 @@ const generate = (numItems: number): Item[] => (
 
 const HorizontalList = () => {
   const [items, setItems] = React.useState(generate(6));
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
 

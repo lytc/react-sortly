@@ -7,7 +7,9 @@ import { ItemRendererProps, useDrag, useDrop, useIsClosestDragging } from 'react
 
 type ItemItemRendererProps = ItemRendererProps<{
   name: string;
-}>;
+}> & {
+  onBegin: () => void;
+};
 const useStyles = makeStyles<
 Theme, { muted: boolean; depth: number }>((theme: Theme) => ({
   root: (props) => ({
@@ -25,12 +27,15 @@ Theme, { muted: boolean; depth: number }>((theme: Theme) => ({
   }),
 }));
 
-const DefaultItemRenderer = (props: ItemItemRendererProps) => {
-  const { id, depth, data: { name } } = props;
+const ItemRenderer = (props: ItemItemRendererProps) => {
+  const { id, depth, data: { name }, onBegin } = props;
   const [{ isDragging }, drag] = useDrag({
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    begin() {
+      onBegin();
+    },
   });
   const [, drop] = useDrop();
   const classes = useStyles({
@@ -47,4 +52,4 @@ const DefaultItemRenderer = (props: ItemItemRendererProps) => {
   );
 };
 
-export default DefaultItemRenderer;
+export default ItemRenderer;

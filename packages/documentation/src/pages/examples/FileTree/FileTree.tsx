@@ -7,12 +7,12 @@ import update from 'immutability-helper';
 import Sortly, { ID, ItemData, findDescendants } from 'react-sortly/src';
 import ItemRenderer from './ItemRenderer';
 
-type Item = ItemData<{
+type Item = {
   name: string;
   type: 'folder' | 'file';
   collapsed?: boolean;
-}>;
-const ITEMS: Item[] = [
+};
+const ITEMS: ItemData<Item>[] = [
   { id: 1, name: random.word(), type: 'folder', depth: 0 },
   { id: 2, name: system.fileName(), type: 'file', depth: 1 },
   { id: 3, name: system.fileName(), type: 'file', depth: 1 },
@@ -32,7 +32,7 @@ const ITEMS: Item[] = [
 ];
 const FileTree = () => {
   const [items, setItems] = React.useState(ITEMS);
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
   const handleToggleCollapse = (id: ID) => {

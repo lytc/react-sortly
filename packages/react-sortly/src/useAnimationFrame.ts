@@ -1,21 +1,38 @@
 import React from 'react';
 
-const useAnimationFrame = (callback: () => void) => {
-  const requestRef = React.useRef<number>();
-  const cancel = () => {
-    if (requestRef.current) {
-      cancelAnimationFrame(requestRef.current);
-      requestRef.current = undefined;
-    }
-  };
-  const animate = () => {
+export default function useRafLoop(callback: CallableFunction): [() => void, () => void, boolean] {
+  const raf = React.useRef<number | null>(null);
+  const [isActive, setIsActive] = React.useState<boolean>(true);
+
+  const loopStep = React.useCallback(() => {
     callback();
-    requestRef.current = requestAnimationFrame(animate);
-  };
+    raf.current = requestAnimationFrame(loopStep);
+  }, [callback]);
 
-  React.useEffect(() => cancel, []);
+  const stop = React.useCallback(() => {
+    setIsActive(false);
+  }, []);
 
-  return [animate, cancel];
-};
+  const start = React.useCallback(() => {
+    setIsActive(true);
+  }, []);
 
-export default useAnimationFrame;
+  const clear = React.useCallback(() => {
+    if (raf.current) {
+      cancelAnimationFrame(raf.current);
+    }
+  }, []);
+
+  React.useEffect(() => clear, [clear]);
+
+  React.useEffect(() => {
+    clear();
+    if (isActive) {
+      raf.current = requestAnimationFrame(loopStep);
+    }
+
+    return clear;
+  }, [isActive, callback, loopStep, clear]);
+
+  return [start, stop, isActive];
+}

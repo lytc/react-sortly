@@ -5,10 +5,11 @@ import { Box } from '@material-ui/core';
 import Sortly, { ItemData } from 'react-sortly/src';
 import DefaultItemRenderer from './DefaultItemRenderer';
 
-type Item = ItemData<{
+type Item = {
+  id: number;
   name: string;
-}>;
-const ITEMS: Item[] = [
+};
+const ITEMS: ItemData<Item>[] = [
   { id: 1, name: 'Priscilla Cormier', depth: 0 },
   { id: 2, name: 'Miss Erich Bartoletti', depth: 0 },
   { id: 3, name: 'Alison Friesen', depth: 1 },
@@ -18,14 +19,14 @@ const ITEMS: Item[] = [
 
 const Simple = () => {
   const [items, setItems] = React.useState(ITEMS);
-  const handleChange = (newItems: Item[]) => {
+  const handleChange = (newItems: ItemData<Item>[]) => {
     setItems(newItems);
   };
 
   return (
     <Box width={{ md: 600 }}>
       <Flipper flipKey={items.map(({ id }) => id).join('.')}>
-        <Sortly<Item>
+        <Sortly
           items={items}
           onChange={handleChange}
         >

@@ -5,7 +5,11 @@ Supported to sort the tree, vertical list, horizontal list, table row and maybe 
 
 ## Installation
 ```bash
-npm install --save react-sortly react-dnd react-dnd-html5-backend
+npm install --save react-sortly react-dnd react-dnd-html5-backend immutability-helper memoize-one
+```
+or
+```bash
+yarn add react-sortly react-dnd react-dnd-html5-backend immutability-helper memoize-one
 ```
 Demo: [https://lytc.github.io/react-sortly](https://lytc.github.io/react-sortly)
 
@@ -18,17 +22,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Sortly, { ContextProvider } from 'react-sortly';
+import Sortly, { ContextProvider, useDrag, useDrop } from 'react-sortly';
 
 const ItemRenderer = (props) => {
-  const { data: { name, depth }, drag, drop } = props;
-  const ref = React.useRef(null);
-
-  drag(drop(ref));
+  const { data: { name, depth } } = props;
+  const [, drag] = useDrag();
+  const [, drop] = useDrop();
 
   return (
-    <div ref={ref} style={{ marginLeft: depth * 20 }}>
-      {name}
+    <div ref={drop}>
+      <div ref={drag} style={{ marginLeft: depth * 20 }}>{name}</div>
     </div>
   );
 };

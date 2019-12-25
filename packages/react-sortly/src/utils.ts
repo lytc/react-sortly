@@ -231,7 +231,7 @@ const insert = <T extends ItemData>(items: T[], data: Optional<T, 'depth'> | Opt
   const currentItemAtIndex = items[targetIndex];
   const currentItemDescendants = findDescendants(items, targetIndex);
   const { depth } = currentItemAtIndex;
-  const newItem = { ...data, depth };
+  const newItem = { ...data, depth } as T;
 
   return update(items, {
     $splice: [[targetIndex + currentItemDescendants.length + 1, 0, newItem]]
@@ -246,7 +246,7 @@ const remove = <T extends ItemData>(items: T[], index: number) => {
   });
 };
 
-const convert = <T extends ObjectLiteral & { id: ID; parentId: null | ID; index: number }>(
+const convert = <T extends ObjectLiteral & { id: ID; parentId?: null | ID; index: number }>(
   items: T[],
   parentId?: null | ID,
   depth?: number,
@@ -292,7 +292,7 @@ const buildTree = <T extends ObjectLiteral>(
   return tree;
 };
 
-const flatten = <T extends ItemData>(items: T[]): (T & { parentId: ID; index: number })[] => (
+const flatten = <T extends ItemData>(items: T[]) => (
   items.map((item, index) => {
     const { depth, ...data } = item;
     const parent = findParent(items, index);
@@ -302,7 +302,7 @@ const flatten = <T extends ItemData>(items: T[]): (T & { parentId: ID; index: nu
       ...data,
       index: siblings.indexOf(item),
       parentId: parent ? parent.id : 0
-    } as (T & { parentId: ID; index: number });
+    };
   })
 );
 
@@ -351,6 +351,21 @@ const memoizedMove = memoize(move) as typeof move;
  */
 const memoizedUpdateDepth = memoize(updateDepth) as typeof updateDepth;
 
+/**
+ * @hidden
+ */
+const memoizedConvert = memoize(convert) as typeof convert;
+
+/**
+ * @hidden
+ */
+const memoizedBuildTree = memoize(buildTree) as typeof buildTree;
+
+/**
+ * @hidden
+ */
+const memoizedFlatten = memoize(flatten) as typeof flatten;
+
 export {
   memoizedFindDescendants as findDescendants,
   memoizedFindDeepestDescendant as findDeepestDescendant,
@@ -366,7 +381,7 @@ export {
   add,
   insert,
   remove,
-  convert,
-  buildTree,
-  flatten
+  memoizedConvert as convert,
+  memoizedBuildTree as buildTree,
+  memoizedFlatten as flatten,
 };

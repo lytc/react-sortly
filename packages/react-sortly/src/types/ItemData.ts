@@ -1,8 +1,7 @@
 import ID from './ID';
-import ObjectLiteral from './ObjectLiteral';
 
-type ItemData<D = ObjectLiteral> = {
-  id: ID;
+type ItemData<D = { id: ID }> = {
+  id: D extends { id: ID } ? D['id'] : ID;
   depth: number;
 } & D;
 

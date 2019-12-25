@@ -9,13 +9,13 @@ import Sortly, { ItemData, DragObject, add, remove, findDescendants } from 'reac
 import DefaultItemRenderer from './DefaultItemRenderer';
 import useScreenSize from '../../hooks/useScreenSize';
 
-type Item = ItemData<{
+type Item = {
   categoryId: number;
   name: string;
-}>;
+};
 
 let idSeq = 0;
-const generate = (numItems: number, categoryId: number): Item[] => (
+const generate = (numItems: number, categoryId: number): ItemData<Item>[] => (
   Array
     .from(Array(numItems).keys())
     .map(() => {
@@ -37,12 +37,11 @@ const CATEGORIES = Array.from(Array(3).keys()).map((data, index) => ({
 
 type TreeProps = {
   id: number;
-  items: Item[]; 
-  onChange: (items: Item[]) => void;
+  items: ItemData<Item>[]; 
+  onChange: (items: ItemData<Item>[]) => void;
   onEnter: (item: DragObject) => void;
 };
 const Tree = ({ items, onChange, onEnter }: TreeProps) => {
-  const ref = React.useRef<HTMLDivElement>(null);
   const [{ hovered, dragItem }, drop] = useDrop({
     accept: 'TREE',
     collect: (monitor) => ({
@@ -51,7 +50,7 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
     }),
   });
 
-  const handleMove = () => {
+  const handleMove = React.useCallback(() => {
     if (!dragItem) {
       return;
     }
@@ -59,18 +58,16 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
     if (hovered) {
       onEnter(dragItem);
     }
-  };
+  }, [dragItem, hovered, onEnter]);
 
   React.useEffect(() => {
     if (dragItem) {
       handleMove();
     }
-  }, [hovered]);
-
-  drop(ref);
+  }, [dragItem, hovered, handleMove]);
 
   return (
-    <div ref={ref} style={{ paddingBottom: 50 }}>
+    <div ref={drop} style={{ paddingBottom: 50 }}>
       <Sortly<Item>
         type="TREE"
         items={items}
@@ -85,7 +82,7 @@ const Tree = ({ items, onChange, onEnter }: TreeProps) => {
 const MultipleTree = () => {
   const { isLargeScreen } = useScreenSize();
   const [categories, setCategories] = React.useState(CATEGORIES);
-  const handleChange = (index: number) => (newItems: Item[]) => {
+  const handleChange = (index: number) => (newItems: ItemData<Item>[]) => {
     setCategories(update(categories, {
       [index]: { items: { $set: newItems } },
     }));
