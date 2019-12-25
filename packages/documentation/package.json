@@ -12,7 +12,7 @@
     "build": "webpack -p --progress --config ./webpack.config.ts"
   },
   "dependencies": {
-    "@material-ui/core": "^4.7.2",
+    "@material-ui/core": "^4.8.1",
     "@material-ui/icons": "^4.4.3",
     "@material-ui/styles": "^4.7.1",
     "@types/faker": "^4.1.8",
@@ -20,15 +20,15 @@
     "faker": "^4.1.0",
     "html-webpack-plugin": "^3.2.0",
     "immutability-helper": "^3.0.1",
-    "react-dnd-html5-backend": "^9.4.0",
-    "react-dnd-touch-backend": "^9.4.0",
+    "react-dnd-html5-backend": "^10.0.2",
+    "react-dnd-touch-backend": "^10.0.2",
     "react-flip-toolkit": "^7.0.6",
     "react-router-dom": "^5.1.2",
     "react-sortly": "^3.0.0-alpha.5",
-    "typedoc": "^0.15.4",
+    "typedoc": "^0.15.5",
     "use-debounce": "^3.3.0",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-dev-server": "^3.8.1"
+    "webpack-dev-server": "^3.10.1"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",

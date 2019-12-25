@@ -5,7 +5,7 @@ import HorizontalList from './pages/examples/HorizontalList/HorizontalList';
 import StressTest from './pages/examples/StressTest';
 import FileTree from './pages/examples/FileTree/FileTree';
 import MultipleTree from './pages/examples/MultipleTree';
-import RevertOnDragOutside from './pages/examples/RevertOnDragOutside';
+import RevertOnDragOutside from './pages/examples/RevertOnDragOutside/RevertOnDragOutside';
 
 export default [
   {

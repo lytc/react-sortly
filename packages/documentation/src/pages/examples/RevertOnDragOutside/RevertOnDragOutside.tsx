@@ -3,9 +3,10 @@ import { Flipper } from 'react-flip-toolkit';
 import { Box, makeStyles, Theme } from '@material-ui/core';
 import { useDrop } from 'react-dnd';
 import clsx from 'clsx';
-
+import { useDebouncedCallback } from 'use-debounce';
 import Sortly, { ItemData } from 'react-sortly/src';
-import DefaultItemRenderer from './DefaultItemRenderer';
+
+import ItemRenderer from './ItemRenderer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -31,29 +32,38 @@ const ITEMS: ItemData<Item>[] = [
 
 const RevertOnDragOutside = () => {
   const [items, setItems] = React.useState(ITEMS);
-  const [pause, setPause] = React.useState(false);
-  const handleChange = (newItems: ItemData<Item>[]) => {
-    if (!pause) {
-      setItems(newItems);
-    }
+  const prevItems = React.useRef<ItemData<Item>[]>();
+  const handleDragBegin = () => {
+    prevItems.current = items;
   };
+  const [revert, cancelRevert] = useDebouncedCallback(() => {
+    if (prevItems.current) {
+      setItems(prevItems.current);
+    }
+  }, 10);
   const type = 'revert-on-drag-outside';
-  const [{ hovered, didDrop }, drop] = useDrop({
+  const [{ hovered }, drop] = useDrop({
     accept: type,
     collect: (monitor) => ({ 
       hovered: monitor.isOver(),
-      didDrop: monitor.didDrop(),
-    })
+    }),
+    drop() {
+      prevItems.current = undefined;
+      cancelRevert();
+    }
   });
 
-  React.useEffect(() => {
-    if (!hovered && !didDrop) {
-      setPause(true);
-      setItems(ITEMS);
-    } else {
-      setPause(false);
+  const handleChange = (newItems: ItemData<Item>[]) => {
+    if (hovered) {
+      setItems(newItems);
     }
-  }, [hovered, didDrop]);
+  };
+
+  React.useEffect(() => {
+    if (!hovered) {
+      revert();
+    }
+  }, [hovered]);
 
   const classes = useStyles();
   return (
@@ -65,7 +75,12 @@ const RevertOnDragOutside = () => {
             items={items}
             onChange={handleChange}
           >
-            {(itemProps) => <DefaultItemRenderer {...itemProps} />}
+            {(itemProps) => (
+              <ItemRenderer 
+                {...itemProps} 
+                onBegin={handleDragBegin} 
+              />
+            )}
           </Sortly>
         </Flipper>
       </div>
