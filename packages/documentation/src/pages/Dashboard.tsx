@@ -10,7 +10,11 @@ const Dashboard = () => (
     </Box>
     <Typography variant="h4">Installation</Typography>
     <Box p={2} bgcolor="grey.200" borderRadius={2} color="secondary.main">
-      <Typography>npm install --save react-sortly react-dnd react-dnd-html5-backend</Typography>
+      <Typography>npm install --save react-sortly react-dnd react-dnd-html5-backend immutability-helper memoize-one</Typography>
+    </Box>
+    Or
+    <Box p={2} bgcolor="grey.200" borderRadius={2} color="secondary.main">
+      <Typography>yarn add react-sortly react-dnd react-dnd-html5-backend immutability-helper memoize-one</Typography>
     </Box>
   </div>
 );
