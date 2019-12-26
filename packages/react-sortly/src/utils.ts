@@ -174,7 +174,7 @@ const updateDepth = <T extends ItemData>(
   depth: number,
   maxDepth = Infinity
 ) => {
-  depth = Math.max(depth, 0); // eslint-disable-line no-param-reassign
+  depth = Math.min(Math.max(depth, 0), maxDepth); // eslint-disable-line no-param-reassign
   const item = items[index];
 
   if (depth === item.depth) {
@@ -192,14 +192,19 @@ const updateDepth = <T extends ItemData>(
   }
 
   let offsetDepth = depth - item.depth;
-  if (maxDepth < Infinity) {
-    const itemToCheckMaxDepth = findDeepestDescendant(items, index) || item;
 
-    if (itemToCheckMaxDepth.depth + offsetDepth > maxDepth) {
-      offsetDepth = maxDepth - itemToCheckMaxDepth.depth;
+  if (maxDepth < Infinity && depth > item.depth) {
+    const deepest = (findDeepestDescendant(items, index) || item).depth + offsetDepth;
+    if (deepest > maxDepth) {
+      depth -= (deepest - maxDepth); // eslint-disable-line no-param-reassign
+    }
+
+    if (depth <= item.depth) {
+      return items;
     }
   }
 
+  offsetDepth = depth - item.depth;
   const descendants = findDescendants(items, index);
   const updateFn: any = {
     [index]: { depth: { $set: depth } }

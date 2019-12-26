@@ -1,3 +1,7 @@
+## [0.0.1] 2019-12-26
+### Fixed
+- maxDepth
+
 ## [3.0.0-alpha.5] 2019-12-13
 ### Changed
 - Use React hooks
