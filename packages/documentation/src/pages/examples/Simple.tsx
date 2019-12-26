@@ -27,7 +27,7 @@ const Simple = () => {
     <Box width={{ md: 600 }}>
       <Flipper flipKey={items.map(({ id }) => id).join('.')}>
         <Sortly
-          maxDepth={3}
+          maxDepth={1}
           items={items}
           onChange={handleChange}
         >

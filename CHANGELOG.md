@@ -1,3 +1,7 @@
+## [3.0.3] 2019-12-26
+### Fixed
+- Fix build version
+
 ## [3.0.2] 2019-12-26
 ### Fixed
 - maxDepth
