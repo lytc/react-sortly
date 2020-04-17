@@ -1,3 +1,7 @@
+## [3.1.0] 2020-04-17
+### Changed
+- Add item prop for restricting parenting
+
 ## [3.0.3] 2019-12-26
 ### Fixed
 - Fix build version

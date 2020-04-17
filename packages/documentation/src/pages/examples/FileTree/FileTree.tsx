@@ -14,21 +14,21 @@ type Item = {
 };
 const ITEMS: ItemData<Item>[] = [
   { id: 1, name: random.word(), type: 'folder', depth: 0 },
-  { id: 2, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 3, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 4, name: system.fileName(), type: 'file', depth: 1 },
+  { id: 2, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 3, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 4, name: system.fileName(), type: 'file', depth: 1, canParent: false },
   { id: 5, name: random.word(), type: 'folder', depth: 0 },
-  { id: 6, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 7, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 8, name: system.fileName(), type: 'file', depth: 1 },
+  { id: 6, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 7, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 8, name: system.fileName(), type: 'file', depth: 1, canParent: false },
   { id: 9, name: random.word(), type: 'folder', collapsed: true, depth: 0 },
-  { id: 10, name: system.fileName(), type: 'file', collapsed: true, depth: 1 },
-  { id: 11, name: system.fileName(), type: 'file', collapsed: true, depth: 1 },
-  { id: 12, name: system.fileName(), type: 'file', collapsed: true, depth: 1 },
+  { id: 10, name: system.fileName(), type: 'file', collapsed: true, depth: 1, canParent: false },
+  { id: 11, name: system.fileName(), type: 'file', collapsed: true, depth: 1, canParent: false },
+  { id: 12, name: system.fileName(), type: 'file', collapsed: true, depth: 1, canParent: false },
   { id: 13, name: random.word(), type: 'folder', depth: 0 },
-  { id: 14, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 15, name: system.fileName(), type: 'file', depth: 1 },
-  { id: 16, name: system.fileName(), type: 'file', depth: 1 },
+  { id: 14, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 15, name: system.fileName(), type: 'file', depth: 1, canParent: false },
+  { id: 16, name: system.fileName(), type: 'file', depth: 1, canParent: false },
 ];
 const FileTree = () => {
   const [items, setItems] = React.useState(ITEMS);

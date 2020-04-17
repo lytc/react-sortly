@@ -144,7 +144,11 @@ const detectIndent = <T extends ItemData>(
   }
 
   const item = items[index];
-  const depth = item.depth + (movementX > 0 ? 1 : -1);
+  const previousItem = index ? items[index - 1] : undefined;
+  let depth = item.depth + (movementX > 0 ? 1 : -1);
+  if (previousItem?.canParent === false) {
+    depth = item.depth > previousItem.depth ? previousItem.depth : item.depth;
+  }
   return updateDepth(items, index, depth, maxDepth);
 };
 
