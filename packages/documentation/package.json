@@ -25,13 +25,13 @@
     "react-flip-toolkit": "^7.0.6",
     "react-router-dom": "^5.1.2",
     "react-sortly": "^3.0.0-alpha.5",
-    "typedoc": "^0.15.5",
+    "typedoc": "^0.21.4",
     "use-debounce": "^3.3.0",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.1"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",
-    "typedoc": "^0.15.0"
+    "typedoc": "^0.21.4"
   }
 }
